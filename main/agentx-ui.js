@@ -127,7 +127,7 @@ const AGENTE_UI = () => {
   const renderMainMenu = () => (
     <Box flexDirection="column">
       <Box justifyContent="center" marginBottom={1}>
-        <BigText text="AGENT-E" font="tiny" colors={['#ff0000', '#ff8000', '#ffff00', '#00ff00', '#0080ff', '#8000ff']} />
+        <BigText text="AGENT-X" font="tiny" colors={['#ff0000', '#ff8000', '#ffff00', '#00ff00', '#0080ff', '#8000ff']} />
       </Box>
       
       <Box justifyContent="center" marginBottom={1}>
@@ -300,7 +300,7 @@ const AGENTE_UI = () => {
       case 'about':
         return (
           <Box flexDirection="column">
-            <Text color="cyan" bold>About AGENT-E</Text>
+            <Text color="cyan" bold>About AGENT-X</Text>
             <Newline />
             <Text>Version: 1.0.0</Text>
             <Text>Description: Multi-agent AI toolkit</Text>

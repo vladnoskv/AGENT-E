@@ -1,6 +1,6 @@
-# 🚀 AGENT-E CLI Usage Guide
+# 🚀 AGENT-X CLI Usage Guide
 
-Welcome to AGENT-E - the colorful multi-agent AI CLI system! This guide will get you up and running quickly.
+Welcome to AGENT-X - the colorful multi-agent AI CLI system! This guide will get you up and running quickly.
 
 ## 📋 Quick Start
 
@@ -17,7 +17,7 @@ npm install
 echo "api_key=your_nvidia_api_key_here" > .env
 ```
 
-### 2. Launch the AGENT-E Interface
+### 2. Launch the AGENT-X Interface
 ```bash
 # Method 1: Direct launch
 node agentx.js
@@ -31,7 +31,7 @@ agentx
 
 ### 3. Basic Commands
 
-#### 🎨 AGENT-E Visual Interface
+#### 🎨 AGENT-X Visual Interface
 - **Interactive Mode**: `node agentx.js`
 - **Help**: `node agentx.js --help`
 - **Chat Mode**: Select "🚀 Interactive Chat" from menu
@@ -172,5 +172,5 @@ nvidia-gpt-cli/
 
 ---
 
-**Version**: AGENT-E v0.0.1
+**Version**: AGENT-X v0.0.1
 **Status**: Beta - Ready for testing and feedback

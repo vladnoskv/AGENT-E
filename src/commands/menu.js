@@ -26,7 +26,7 @@ const BANNER_BLOCK = String.raw`
 
 const displayHeader = () => {
   console.log(chalk.hex("#00ff88")(BANNER_BLOCK));
-  console.log(chalk.hex("#ffaa00").bold("🚀 AGENT-E v0.0.1 (alpha)"));
+  console.log(chalk.hex("#ffaa00").bold("🚀 AGENT-X v0.0.1 (alpha)"));
   console.log(chalk.hex("#888888")("Powered by NVIDIA GPT-OSS-20B"));
   console.log(chalk.hex("#444444")("──────────────────────────────────────────────────────────────"));
   console.log();
@@ -73,7 +73,7 @@ const runScript = (scriptName) => {
 };
 
 export const showMenu = async () => {
-  console.log(chalk.cyan.bold('AGENT-E Menu'));
+  console.log(chalk.cyan.bold('AGENT-X Menu'));
   console.log(chalk.gray('Select an option:\n'));
 
   const { choice } = await inquirer.prompt([

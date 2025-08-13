@@ -1,6 +1,6 @@
 # Internationalization Guide (i18n)
 
-AGENT-E now supports multiple languages with a comprehensive internationalization system. This guide explains how to use, configure, and contribute translations.
+AGENT-X now supports multiple languages with a comprehensive internationalization system. This guide explains how to use, configure, and contribute translations.
 
 ## Supported Languages
 
@@ -16,16 +16,16 @@ Currently supported languages:
 
 1. **Interactive CLI with i18n:**
    ```bash
-   node main/agent-e-i18n.js
+   node main/AGENT-X-i18n.js
    ```
 
 2. **Set language via environment variable:**
    ```bash
    # Use Spanish
-   AGENTE_LANG=es node main/agent-e-i18n.js
+   AGENTE_LANG=es node main/AGENT-X-i18n.js
    
    # Use French
-   AGENTE_LANG=fr node main/agent-e-i18n.js
+   AGENTE_LANG=fr node main/AGENT-X-i18n.js
    ```
 
 3. **Change language in settings:**
@@ -225,10 +225,10 @@ The system automatically detects language in this order:
 
 ```bash
 # Test Spanish
-AGENTE_LANG=es node main/agent-e-i18n.js
+AGENTE_LANG=es node main/AGENT-X-i18n.js
 
 # Test French
-AGENTE_LANG=fr node main/agent-e-i18n.js
+AGENTE_LANG=fr node main/AGENT-X-i18n.js
 ```
 
 ### Automated Testing

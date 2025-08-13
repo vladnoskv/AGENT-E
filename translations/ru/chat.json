@@ -1,8 +1,8 @@
 {
-  "response": "NOT_TRANSLATED",
-  "disconnected": "NOT_TRANSLATED",
-  "title": "NOT_TRANSLATED",
-  "prompt": "NOT_TRANSLATED",
-  "thinking": "NOT_TRANSLATED",
-  "error": "NOT_TRANSLATED"
+  "title": "[RU] Chat with {agent}",
+  "prompt": "[RU] Enter your message (or 'quit' to exit):",
+  "thinking": "[RU] {agent} is thinking...",
+  "response": "[RU] {agent} says:",
+  "error": "[RU] Failed to get response from {agent}",
+  "disconnected": "[RU] Chat session ended"
 }

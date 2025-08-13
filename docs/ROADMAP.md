@@ -1,9 +1,9 @@
-# 🗺️ AGENT-E Development Roadmap
+# 🗺️ AGENT-X Development Roadmap
 
 ## 📊 Current System Analysis
 
 ### ✅ **What's Working (v0.0.1)**
-- **AGENT-E Visual Interface**: Colorful rainbow header, interactive menu
+- **AGENT-X Visual Interface**: Colorful rainbow header, interactive menu
 - **6 Specialized Agents**: Master, CodeAnalyzer, DocumentationWriter, BugFixer, Architect, SecurityExpert
 - **Multi-Agent Orchestration**: Parallel processing with intelligent synthesis
 - **File System Integration**: Read/write/scan files and directories
@@ -46,7 +46,7 @@
 
 ### **Technical Implementation**
 
-#### **1. API Manager Package (`@agent-e/api-manager`)**
+#### **1. API Manager Package (`@AGENT-X/api-manager`)**
 ```javascript
 // New package structure
 packages/
@@ -67,7 +67,7 @@ packages/
 
 #### **2. Configuration System**
 ```yaml
-# agent-e.config.yml
+# AGENT-X.config.yml
 apis:
   nvidia:
     api_key: ${NVIDIA_API_KEY}
@@ -144,7 +144,7 @@ agents:
 
 ## 📦 **Dependency Strategy**
 
-### **Native Scripts Package (`@agent-e/native-scripts`)**
+### **Native Scripts Package (`@AGENT-X/native-scripts`)**
 
 #### **Rationale**
 - **Zero External Dependencies**: Reduce supply chain risks
@@ -260,7 +260,7 @@ packages/
 
 ---
 
-**Current Version**: AGENT-E v0.0.1  
+**Current Version**: AGENT-X v0.0.1  
 **Next Milestone**: v0.1.0 - Multi-API Foundation  
 **Estimated Completion**: 8-10 weeks  
 **Status**: Beta - Ready for community feedback

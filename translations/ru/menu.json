@@ -1,18 +1,18 @@
 {
-  "select_option": "NOT_TRANSLATED",
-  "back": "NOT_TRANSLATED",
-  "quit": "NOT_TRANSLATED",
-  "cancel": "NOT_TRANSLATED",
-  "continue": "NOT_TRANSLATED",
-  "title": "NOT_TRANSLATED",
+  "title": "[RU] Main Menu",
+  "select_option": "[RU] Select an option",
+  "back": "[RU] ← Back",
+  "quit": "[RU] Quit",
+  "cancel": "[RU] Cancel",
+  "continue": "[RU] Continue",
   "options": {
-    "chat_with_agent": "NOT_TRANSLATED",
-    "list_agents": "NOT_TRANSLATED",
-    "analyze_codebase": "NOT_TRANSLATED",
-    "generate_docs": "NOT_TRANSLATED",
-    "fix_bugs": "NOT_TRANSLATED",
-    "security_scan": "NOT_TRANSLATED",
-    "settings": "NOT_TRANSLATED",
-    "help": "NOT_TRANSLATED"
+    "chat_with_agent": "[RU] 💬 Chat with Agent",
+    "list_agents": "[RU] 🤖 List Available Agents",
+    "analyze_codebase": "[RU] 📊 Analyze Codebase",
+    "generate_docs": "[RU] 📝 Generate Documentation",
+    "fix_bugs": "[RU] 🐛 Fix Bugs",
+    "security_scan": "[RU] 🔒 Security Scan",
+    "settings": "[RU] ⚙️ Settings",
+    "help": "[RU] ❓ Help"
   }
 }

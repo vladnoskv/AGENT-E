@@ -3,7 +3,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
-const STATE_DIR = join(process.cwd(), '.agent-e');
+const STATE_DIR = join(process.cwd(), '.AGENT-X');
 const STATE_FILE = join(STATE_DIR, 'current-task.json');
 
 function ensureDir() {

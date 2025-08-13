@@ -8,10 +8,10 @@
   - Optional codebase indexing
   - Optional autostart of selected agent (Chat started with `--autostart`)
 - Single source of truth for tasks:
-  - Task Manifest (`.agent-e/tasks/<taskId>.json`) with utilities in `src/utils/task-manifest.js`
-  - Current task persisted in `.agent-e/current-task.json`
-  - Index results persisted to `.agent-e/index/<taskId>.json` and merged into manifest
-  - Task memory cache in `.agent-e/cache/<taskId>.json`
+  - Task Manifest (`.AGENT-X/tasks/<taskId>.json`) with utilities in `src/utils/task-manifest.js`
+  - Current task persisted in `.AGENT-X/current-task.json`
+  - Index results persisted to `.AGENT-X/index/<taskId>.json` and merged into manifest
+  - Task memory cache in `.AGENT-X/cache/<taskId>.json`
 - Chat improvements (`src/commands/chat.js`):
   - Reads current task, shows context summary
   - Autostart kickoff using manifest context (`--autostart`)

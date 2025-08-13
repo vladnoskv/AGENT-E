@@ -1,0 +1,777 @@
+{
+  "root": "E:\\CODING\\AGENTX",
+  "generated_at": "2025-08-13T20:27:03.718592Z",
+  "total_files": 154,
+  "files": [
+    {
+      "path": ".env",
+      "size": 171,
+      "modified": "2025-08-13T21:13:57.089964"
+    },
+    {
+      "path": ".env.example",
+      "size": 278,
+      "modified": "2025-08-12T23:35:20.266741"
+    },
+    {
+      "path": ".gitignore",
+      "size": 67,
+      "modified": "2025-08-13T16:32:43.732064"
+    },
+    {
+      "path": "agent-orchestrator.js",
+      "size": 7768,
+      "modified": "2025-08-13T03:25:32.175111"
+    },
+    {
+      "path": "bugs.md",
+      "size": 4709,
+      "modified": "2025-08-13T15:37:38.139253"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "size": 1626,
+      "modified": "2025-08-13T06:35:51.672481"
+    },
+    {
+      "path": "chat.js",
+      "size": 2560,
+      "modified": "2025-08-13T00:17:35.223805"
+    },
+    {
+      "path": "cli.py",
+      "size": 8283,
+      "modified": "2025-08-13T17:33:46.621588"
+    },
+    {
+      "path": "hyper-expert-orchestrator.js",
+      "size": 9622,
+      "modified": "2025-08-13T00:23:30.276135"
+    },
+    {
+      "path": "i18ntk-runtime.md",
+      "size": 6742,
+      "modified": "2025-08-13T14:52:01.752123"
+    },
+    {
+      "path": "package-lock.json",
+      "size": 67952,
+      "modified": "2025-08-13T19:16:21.048648"
+    },
+    {
+      "path": "package.json",
+      "size": 1654,
+      "modified": "2025-08-13T21:21:05.822078"
+    },
+    {
+      "path": "README.md",
+      "size": 13811,
+      "modified": "2025-08-13T18:28:27.661997"
+    },
+    {
+      "path": "requirements.txt",
+      "size": 431,
+      "modified": "2025-08-13T19:44:06.015549"
+    },
+    {
+      "path": "response.js",
+      "size": 2354,
+      "modified": "2025-08-13T00:17:39.244939"
+    },
+    {
+      "path": "setup.py",
+      "size": 953,
+      "modified": "2025-08-13T18:27:25.867707"
+    },
+    {
+      "path": "test_models.py",
+      "size": 4668,
+      "modified": "2025-08-13T17:26:58.670520"
+    },
+    {
+      "path": "vitest.config.js",
+      "size": 534,
+      "modified": "2025-08-12T22:42:37.969618"
+    },
+    {
+      "path": ".AGENT-X\\current-task.json",
+      "size": 81,
+      "modified": "2025-08-13T16:16:06.384842"
+    },
+    {
+      "path": ".AGENT-X\\cache\\2.json",
+      "size": 190,
+      "modified": "2025-08-13T06:25:28.053655"
+    },
+    {
+      "path": ".AGENT-X\\cache\\2025-08-13T05-08-19-240Z.json",
+      "size": 213,
+      "modified": "2025-08-13T06:08:19.311738"
+    },
+    {
+      "path": ".AGENT-X\\cache\\2025-08-13T05-15-35-954Z.json",
+      "size": 213,
+      "modified": "2025-08-13T06:15:35.994608"
+    },
+    {
+      "path": ".AGENT-X\\index\\2.json",
+      "size": 199150,
+      "modified": "2025-08-13T06:25:28.052656"
+    },
+    {
+      "path": ".AGENT-X\\index\\2025-08-13T05-08-19-240Z.json",
+      "size": 193219,
+      "modified": "2025-08-13T06:08:19.310127"
+    },
+    {
+      "path": ".AGENT-X\\index\\2025-08-13T05-15-35-954Z.json",
+      "size": 194273,
+      "modified": "2025-08-13T06:15:35.993593"
+    },
+    {
+      "path": ".github\\workflows\\release.yml",
+      "size": 1617,
+      "modified": "2025-08-12T21:06:51.653013"
+    },
+    {
+      "path": ".test-temp\\test-file.txt",
+      "size": 41,
+      "modified": "2025-08-13T16:16:43.446198"
+    },
+    {
+      "path": "agent\\agent.py",
+      "size": 11953,
+      "modified": "2025-08-13T19:13:26.164131"
+    },
+    {
+      "path": "agent\\tools.py",
+      "size": 12193,
+      "modified": "2025-08-13T19:10:02.870041"
+    },
+    {
+      "path": "agent\\workflow.py",
+      "size": 11660,
+      "modified": "2025-08-13T19:06:31.809888"
+    },
+    {
+      "path": "agent\\__init__.py",
+      "size": 921,
+      "modified": "2025-08-13T19:11:07.564508"
+    },
+    {
+      "path": "agentx.egg-info\\dependency_links.txt",
+      "size": 1,
+      "modified": "2025-08-13T18:28:51.081133"
+    },
+    {
+      "path": "agentx.egg-info\\entry_points.txt",
+      "size": 41,
+      "modified": "2025-08-13T18:28:51.083130"
+    },
+    {
+      "path": "agentx.egg-info\\PKG-INFO",
+      "size": 15109,
+      "modified": "2025-08-13T18:28:51.078623"
+    },
+    {
+      "path": "agentx.egg-info\\requires.txt",
+      "size": 69,
+      "modified": "2025-08-13T18:28:51.084638"
+    },
+    {
+      "path": "agentx.egg-info\\SOURCES.txt",
+      "size": 533,
+      "modified": "2025-08-13T18:28:51.131711"
+    },
+    {
+      "path": "agentx.egg-info\\top_level.txt",
+      "size": 11,
+      "modified": "2025-08-13T18:28:51.086637"
+    },
+    {
+      "path": "bin\\AGENT-X.js",
+      "size": 5562,
+      "modified": "2025-08-13T15:45:38.518521"
+    },
+    {
+      "path": "cli\\main.py",
+      "size": 3509,
+      "modified": "2025-08-13T20:58:59.307645"
+    },
+    {
+      "path": "cli\\menu.py",
+      "size": 19782,
+      "modified": "2025-08-13T21:22:02.358619"
+    },
+    {
+      "path": "cli\\__init__.py",
+      "size": 168,
+      "modified": "2025-08-13T18:19:38.061653"
+    },
+    {
+      "path": "docs\\api-chat-nvidia-oss20b.md",
+      "size": 682,
+      "modified": "2025-08-12T23:32:46.334359"
+    },
+    {
+      "path": "docs\\api-response-nvidia-oss20b.md",
+      "size": 814,
+      "modified": "2025-08-12T23:33:04.237236"
+    },
+    {
+      "path": "docs\\CONTRIBUTING.md",
+      "size": 8827,
+      "modified": "2025-08-13T02:08:05.793250"
+    },
+    {
+      "path": "docs\\EXPERT_SYSTEM.md",
+      "size": 3424,
+      "modified": "2025-08-13T01:03:16.234909"
+    },
+    {
+      "path": "docs\\I18N_GUIDE.md",
+      "size": 6279,
+      "modified": "2025-08-13T01:03:44.138531"
+    },
+    {
+      "path": "docs\\RELEASE_CHECKLIST.md",
+      "size": 4463,
+      "modified": "2025-08-13T01:04:28.645544"
+    },
+    {
+      "path": "docs\\RELEASE_NOTES.md",
+      "size": 4824,
+      "modified": "2025-08-13T01:03:58.836845"
+    },
+    {
+      "path": "docs\\ROADMAP.md",
+      "size": 9989,
+      "modified": "2025-08-13T01:03:23.582507"
+    },
+    {
+      "path": "docs\\USAGE.md",
+      "size": 4040,
+      "modified": "2025-08-13T01:03:11.272738"
+    },
+    {
+      "path": "examples\\agent_demo.py",
+      "size": 4770,
+      "modified": "2025-08-13T20:12:02.364820"
+    },
+    {
+      "path": "i18ntk-reports\\analysis-de.txt",
+      "size": 5904,
+      "modified": "2025-08-12T22:40:57.644494"
+    },
+    {
+      "path": "i18ntk-reports\\analysis-es.txt",
+      "size": 5904,
+      "modified": "2025-08-12T22:40:57.655495"
+    },
+    {
+      "path": "i18ntk-reports\\analysis-fr.txt",
+      "size": 5904,
+      "modified": "2025-08-12T22:40:57.665756"
+    },
+    {
+      "path": "i18ntk-reports\\analysis-ru.txt",
+      "size": 5845,
+      "modified": "2025-08-12T22:40:57.675484"
+    },
+    {
+      "path": "knowledge\\architect-updates.json",
+      "size": 479,
+      "modified": "2025-08-12T23:56:24.468359"
+    },
+    {
+      "path": "knowledge\\code-analyzer-updates.json",
+      "size": 492,
+      "modified": "2025-08-12T23:56:24.452357"
+    },
+    {
+      "path": "knowledge\\last-update.json",
+      "size": 46,
+      "modified": "2025-08-13T05:26:52.639373"
+    },
+    {
+      "path": "knowledge\\security-expert-updates.json",
+      "size": 436,
+      "modified": "2025-08-12T23:56:24.474357"
+    },
+    {
+      "path": "main\\AGENT-X-i18n.js",
+      "size": 14064,
+      "modified": "2025-08-12T23:25:11.733433"
+    },
+    {
+      "path": "main\\AGENT-X.js",
+      "size": 7806,
+      "modified": "2025-08-13T01:10:14.417095"
+    },
+    {
+      "path": "main\\agent.js",
+      "size": 18722,
+      "modified": "2025-08-12T23:15:09.189045"
+    },
+    {
+      "path": "main\\agentx-i18n.js",
+      "size": 14064,
+      "modified": "2025-08-13T01:10:03.315810"
+    },
+    {
+      "path": "main\\agentx-ui.js",
+      "size": 9924,
+      "modified": "2025-08-13T01:03:04.368489"
+    },
+    {
+      "path": "main\\multi-agent.js",
+      "size": 10444,
+      "modified": "2025-08-12T23:16:10.137038"
+    },
+    {
+      "path": "models\\README.md",
+      "size": 3118,
+      "modified": "2025-08-13T16:48:53.007564"
+    },
+    {
+      "path": "models\\registry.py",
+      "size": 7546,
+      "modified": "2025-08-13T18:05:59.262456"
+    },
+    {
+      "path": "models\\__init__.py",
+      "size": 4189,
+      "modified": "2025-08-13T17:40:41.159314"
+    },
+    {
+      "path": "models\\agent\\orchestrator.py",
+      "size": 4379,
+      "modified": "2025-08-13T17:33:09.860471"
+    },
+    {
+      "path": "models\\agent\\__init__.py",
+      "size": 65,
+      "modified": "2025-08-13T17:33:30.251528"
+    },
+    {
+      "path": "models\\llm\\bigcode_starcoder2.py",
+      "size": 5882,
+      "modified": "2025-08-13T18:11:51.801810"
+    },
+    {
+      "path": "models\\llm\\__init__.py",
+      "size": 2711,
+      "modified": "2025-08-13T18:08:11.667332"
+    },
+    {
+      "path": "models\\retrieval\\specialized.py",
+      "size": 2485,
+      "modified": "2025-08-13T17:34:06.609299"
+    },
+    {
+      "path": "models\\retrieval\\__init__.py",
+      "size": 4822,
+      "modified": "2025-08-13T17:26:26.596891"
+    },
+    {
+      "path": "models\\utils\\model_factory.py",
+      "size": 3270,
+      "modified": "2025-08-13T16:48:18.741529"
+    },
+    {
+      "path": "models\\utils\\prompt_loader.py",
+      "size": 917,
+      "modified": "2025-08-13T17:32:50.656565"
+    },
+    {
+      "path": "models\\visual\\__init__.py",
+      "size": 5884,
+      "modified": "2025-08-13T16:47:03.753674"
+    },
+    {
+      "path": "prompts\\master-agent.md",
+      "size": 2634,
+      "modified": "2025-08-12T17:30:28.731771"
+    },
+    {
+      "path": "prompts\\agent\\system.md",
+      "size": 664,
+      "modified": "2025-08-13T17:33:20.419574"
+    },
+    {
+      "path": "prompts\\agents\\architect.md",
+      "size": 4464,
+      "modified": "2025-08-12T17:31:42.762373"
+    },
+    {
+      "path": "prompts\\agents\\bug-fixer.md",
+      "size": 3556,
+      "modified": "2025-08-12T17:31:20.144752"
+    },
+    {
+      "path": "prompts\\agents\\code-analyzer.md",
+      "size": 2648,
+      "modified": "2025-08-12T17:32:51.081769"
+    },
+    {
+      "path": "prompts\\agents\\documentation-writer.md",
+      "size": 2875,
+      "modified": "2025-08-12T17:31:00.222753"
+    },
+    {
+      "path": "prompts\\agents\\security-expert.md",
+      "size": 4713,
+      "modified": "2025-08-12T17:32:11.186447"
+    },
+    {
+      "path": "settings\\.i18n-admin-config.json",
+      "size": 146,
+      "modified": "2025-08-13T14:42:26.446864"
+    },
+    {
+      "path": "settings\\i18ntk-config.json",
+      "size": 4756,
+      "modified": "2025-08-13T14:45:49.833481"
+    },
+    {
+      "path": "settings\\initialization.json",
+      "size": 162,
+      "modified": "2025-08-13T14:42:47.804399"
+    },
+    {
+      "path": "src\\agents\\expert-system.js",
+      "size": 12532,
+      "modified": "2025-08-13T00:20:54.558060"
+    },
+    {
+      "path": "src\\agents\\hyper-expert.js",
+      "size": 9634,
+      "modified": "2025-08-13T00:20:44.353272"
+    },
+    {
+      "path": "src\\agents\\orchestrator.js",
+      "size": 7768,
+      "modified": "2025-08-13T01:02:23.138712"
+    },
+    {
+      "path": "src\\agents\\expert\\expert-agent-system.js",
+      "size": 12538,
+      "modified": "2025-08-13T00:17:48.459818"
+    },
+    {
+      "path": "src\\agents\\expert\\hyper-expert-orchestrator.js",
+      "size": 9392,
+      "modified": "2025-08-13T03:59:40.693067"
+    },
+    {
+      "path": "src\\commands\\chat.js",
+      "size": 6435,
+      "modified": "2025-08-13T06:34:18.716288"
+    },
+    {
+      "path": "src\\commands\\index-codebase.js",
+      "size": 3436,
+      "modified": "2025-08-13T16:05:28.218950"
+    },
+    {
+      "path": "src\\commands\\index.js",
+      "size": 10316,
+      "modified": "2025-08-12T17:25:43.149944"
+    },
+    {
+      "path": "src\\commands\\ink-interface.jsx",
+      "size": 5218,
+      "modified": "2025-08-13T06:04:20.588580"
+    },
+    {
+      "path": "src\\commands\\menu.js",
+      "size": 5077,
+      "modified": "2025-08-13T06:16:31.392666"
+    },
+    {
+      "path": "src\\commands\\response.js",
+      "size": 1883,
+      "modified": "2025-08-13T15:43:53.398153"
+    },
+    {
+      "path": "src\\commands\\setup-task.js",
+      "size": 4571,
+      "modified": "2025-08-13T06:34:54.290750"
+    },
+    {
+      "path": "src\\core\\agent.js",
+      "size": 18586,
+      "modified": "2025-08-12T22:29:12.536430"
+    },
+    {
+      "path": "src\\core\\api\\nvidia.js",
+      "size": 1518,
+      "modified": "2025-08-13T03:53:45.979269"
+    },
+    {
+      "path": "src\\core\\mcp\\mcp-server.js",
+      "size": 2882,
+      "modified": "2025-08-12T23:44:36.410032"
+    },
+    {
+      "path": "src\\core\\orchestrators\\agent-orchestrator.js",
+      "size": 10624,
+      "modified": "2025-08-13T15:58:44.765853"
+    },
+    {
+      "path": "src\\knowledge\\knowledge-updater.js",
+      "size": 10854,
+      "modified": "2025-08-13T00:17:59.446079"
+    },
+    {
+      "path": "src\\knowledge\\knowledge-updates.js",
+      "size": 268,
+      "modified": "2025-08-13T00:23:29.050527"
+    },
+    {
+      "path": "src\\knowledge\\knowledge\\architect-updates.json",
+      "size": 479,
+      "modified": "2025-08-13T06:15:47.634381"
+    },
+    {
+      "path": "src\\knowledge\\knowledge\\code-analyzer-updates.json",
+      "size": 492,
+      "modified": "2025-08-13T06:15:47.625365"
+    },
+    {
+      "path": "src\\knowledge\\knowledge\\last-update.json",
+      "size": 46,
+      "modified": "2025-08-13T06:15:47.642181"
+    },
+    {
+      "path": "src\\knowledge\\knowledge\\security-expert-updates.json",
+      "size": 436,
+      "modified": "2025-08-13T06:15:47.638597"
+    },
+    {
+      "path": "src\\scripts\\test-agent-system.js",
+      "size": 3473,
+      "modified": "2025-08-13T06:16:14.302863"
+    },
+    {
+      "path": "src\\scripts\\verify-nvidia-setup.js",
+      "size": 2428,
+      "modified": "2025-08-12T22:58:50.889058"
+    },
+    {
+      "path": "src\\ui\\header.js",
+      "size": 3874,
+      "modified": "2025-08-13T01:06:22.343920"
+    },
+    {
+      "path": "src\\utils\\current-task.js",
+      "size": 815,
+      "modified": "2025-08-13T06:13:47.332617"
+    },
+    {
+      "path": "src\\utils\\i18n.js",
+      "size": 4512,
+      "modified": "2025-08-13T15:25:58.152197"
+    },
+    {
+      "path": "src\\utils\\knowledge-updater.js",
+      "size": 10878,
+      "modified": "2025-08-13T00:21:06.832151"
+    },
+    {
+      "path": "src\\utils\\knowledge-updates.js",
+      "size": 268,
+      "modified": "2025-08-12T23:55:22.162494"
+    },
+    {
+      "path": "src\\utils\\settings-manager.js",
+      "size": 3693,
+      "modified": "2025-08-12T22:38:02.475787"
+    },
+    {
+      "path": "src\\utils\\task-manifest.js",
+      "size": 909,
+      "modified": "2025-08-13T06:34:40.468241"
+    },
+    {
+      "path": "src\\utils\\task-memory.js",
+      "size": 1027,
+      "modified": "2025-08-13T06:04:49.436644"
+    },
+    {
+      "path": "src\\utils\\ui-manager.js",
+      "size": 5980,
+      "modified": "2025-08-12T21:14:08.155716"
+    },
+    {
+      "path": "tests\\cli.test.js",
+      "size": 9903,
+      "modified": "2025-08-12T22:41:14.290948"
+    },
+    {
+      "path": "tests\\i18n.test.mjs",
+      "size": 7112,
+      "modified": "2025-08-13T15:30:31.039128"
+    },
+    {
+      "path": "tests\\setup.js",
+      "size": 1625,
+      "modified": "2025-08-12T22:42:50.858740"
+    },
+    {
+      "path": "tests\\test-agent-system.js",
+      "size": 3230,
+      "modified": "2025-08-13T15:43:18.015103"
+    },
+    {
+      "path": "tests\\test-comprehensive.js",
+      "size": 6111,
+      "modified": "2025-08-13T16:06:27.958302"
+    },
+    {
+      "path": "tests\\test-expert-system.js",
+      "size": 3071,
+      "modified": "2025-08-13T00:23:38.643233"
+    },
+    {
+      "path": "tests\\test_models_integration.py",
+      "size": 6457,
+      "modified": "2025-08-13T18:00:46.315978"
+    },
+    {
+      "path": "tests\\test_starcoder2.py",
+      "size": 2831,
+      "modified": "2025-08-13T18:06:47.964687"
+    },
+    {
+      "path": "tests\\verify.js",
+      "size": 6926,
+      "modified": "2025-08-12T22:46:29.270814"
+    },
+    {
+      "path": "tools\\ai-assistant.js",
+      "size": 12351,
+      "modified": "2025-08-12T17:14:36.200601"
+    },
+    {
+      "path": "tools\\tool-runner.js",
+      "size": 6001,
+      "modified": "2025-08-12T17:12:59.079915"
+    },
+    {
+      "path": "tools\\mcp\\mcp-server.js",
+      "size": 14003,
+      "modified": "2025-08-12T17:09:26.473888"
+    },
+    {
+      "path": "translations\\en\\agents.json",
+      "size": 829,
+      "modified": "2025-08-12T22:38:11.100945"
+    },
+    {
+      "path": "translations\\en\\app.json",
+      "size": 256,
+      "modified": "2025-08-12T22:37:29.141864"
+    },
+    {
+      "path": "translations\\en\\chat.json",
+      "size": 257,
+      "modified": "2025-08-12T22:38:21.273913"
+    },
+    {
+      "path": "translations\\en\\common.json",
+      "size": 3690,
+      "modified": "2025-08-13T01:08:14.633450"
+    },
+    {
+      "path": "translations\\en\\errors.json",
+      "size": 385,
+      "modified": "2025-08-12T22:39:12.304387"
+    },
+    {
+      "path": "translations\\en\\file-operations.json",
+      "size": 298,
+      "modified": "2025-08-12T22:38:44.579414"
+    },
+    {
+      "path": "translations\\en\\menu.json",
+      "size": 521,
+      "modified": "2025-08-12T22:37:51.648904"
+    },
+    {
+      "path": "translations\\en\\progress.json",
+      "size": 197,
+      "modified": "2025-08-12T22:39:21.565494"
+    },
+    {
+      "path": "translations\\en\\settings.json",
+      "size": 268,
+      "modified": "2025-08-12T22:39:02.150058"
+    },
+    {
+      "path": "translations\\en\\ui.json",
+      "size": 444,
+      "modified": "2025-08-12T22:39:31.955482"
+    },
+    {
+      "path": "translations\\ru\\agents.json",
+      "size": 868,
+      "modified": "2025-08-13T14:45:55.642988"
+    },
+    {
+      "path": "translations\\ru\\app.json",
+      "size": 279,
+      "modified": "2025-08-13T14:45:55.647915"
+    },
+    {
+      "path": "translations\\ru\\chat.json",
+      "size": 280,
+      "modified": "2025-08-13T14:45:55.654520"
+    },
+    {
+      "path": "translations\\ru\\common.json",
+      "size": 4055,
+      "modified": "2025-08-13T14:45:55.665430"
+    },
+    {
+      "path": "translations\\ru\\errors.json",
+      "size": 408,
+      "modified": "2025-08-13T14:45:55.671834"
+    },
+    {
+      "path": "translations\\ru\\file-operations.json",
+      "size": 325,
+      "modified": "2025-08-13T14:45:55.679091"
+    },
+    {
+      "path": "translations\\ru\\menu.json",
+      "size": 574,
+      "modified": "2025-08-13T14:45:55.686673"
+    },
+    {
+      "path": "translations\\ru\\progress.json",
+      "size": 212,
+      "modified": "2025-08-13T14:45:55.692776"
+    },
+    {
+      "path": "translations\\ru\\settings.json",
+      "size": 291,
+      "modified": "2025-08-13T14:45:55.697309"
+    },
+    {
+      "path": "translations\\ru\\ui.json",
+      "size": 481,
+      "modified": "2025-08-13T14:45:55.706260"
+    },
+    {
+      "path": "utils\\settings-manager.js",
+      "size": 3693,
+      "modified": "2025-08-13T00:18:07.601908"
+    },
+    {
+      "path": "utils\\ui-manager.js",
+      "size": 5980,
+      "modified": "2025-08-13T00:18:11.486308"
+    }
+  ]
+}

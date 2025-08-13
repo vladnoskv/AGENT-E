@@ -162,7 +162,7 @@ Provide a focused response:`;
   async orchestrateTask(userRequest, options = {}) {
     const { showThinking = false, targetFile = null } = options;
     
-    console.log(chalk.blue.bold('\n🤖 AGENT-E Task Orchestrator'));
+    console.log(chalk.blue.bold('\n🤖 AGENT-X Task Orchestrator'));
     console.log(chalk.gray('='.repeat(40)));
 
     try {
@@ -221,7 +221,7 @@ async function main() {
   const args = process.argv.slice(2);
   
   if (args.length === 0 || args.includes('--help')) {
-    console.log(chalk.cyan.bold('🤖 AGENT-E Orchestrator'));
+    console.log(chalk.cyan.bold('🤖 AGENT-X Orchestrator'));
     console.log('');
     console.log('Usage:');
     console.log('  node agent-orchestrator.js <task> [options]');

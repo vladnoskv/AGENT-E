@@ -5,6 +5,7 @@ import ora from 'ora';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { spawn } from 'child_process';
 import dotenv from 'dotenv';
 import NvidiaClient from '../api/nvidia.js';
 
@@ -38,6 +39,56 @@ class AgentOrchestrator {
         prompt: 'You are a testing agent. Create comprehensive tests and validate functionality.',
       },
     };
+  }
+
+  async runCommand(command, args = [], { cwd = process.cwd(), timeout = 0, env = process.env } = {}) {
+    return new Promise((resolve, reject) => {
+      const spinner = ora(`Running command: ${command} ${args.join(' ')}`).start();
+      const child = spawn(command, args, { cwd, env, shell: true });
+      let stdout = '';
+      let stderr = '';
+      let timedOut = false;
+
+      const onDataOut = (d) => { stdout += d.toString(); };
+      const onDataErr = (d) => { stderr += d.toString(); };
+      child.stdout?.on('data', onDataOut);
+      child.stderr?.on('data', onDataErr);
+
+      let to;
+      if (timeout && timeout > 0) {
+        to = setTimeout(() => {
+          timedOut = true;
+          spinner.warn(`Command timed out after ${timeout}ms, killing...`);
+          child.kill('SIGKILL');
+        }, timeout);
+      }
+
+      child.on('close', (code) => {
+        if (to) clearTimeout(to);
+        if (!timedOut) spinner.succeed(`Command exited with code ${code}`);
+        resolve({ code, stdout, stderr });
+      });
+
+      child.on('error', (err) => {
+        if (to) clearTimeout(to);
+        spinner.fail(`Failed to run command: ${err.message}`);
+        reject(err);
+      });
+    });
+  }
+
+  async analyzeCommandOutput(command, { code, stdout, stderr }) {
+    const prompt = `You are a DevOps assistant. Analyze the following command execution and provide:
+1) A brief summary of what happened
+2) Any errors and likely causes
+3) Concrete next steps or fixes
+
+Command: ${command}
+Exit code: ${code}
+STDOUT:\n${stdout}\n
+STDERR:\n${stderr}`;
+    const analysis = await this.callModel(prompt);
+    return analysis;
   }
 
   async dispatchToAgent(agentType, task, context = {}) {
@@ -114,7 +165,7 @@ Provide a focused response:`;
 
   async orchestrateTask(userRequest, options = {}) {
     const { showThinking = false, targetFile = null } = options;
-    console.log(chalk.blue.bold('\n🤖 AGENT-E Task Orchestrator'));
+    console.log(chalk.blue.bold('\n🤖 AGENT-X Task Orchestrator'));
     console.log(chalk.gray('='.repeat(40)));
 
     try {
@@ -153,26 +204,67 @@ Provide a focused response:`;
 // CLI Interface
 async function main() {
   const args = process.argv.slice(2);
-  if (args.length === 0 || args.includes('--help')) {
-    console.log(chalk.cyan.bold('🤖 AGENT-E Orchestrator'));
+  const hasExec = args.includes('--exec');
+
+  // If no arguments and not in exec mode, show interactive help
+  if (args.length === 0 && !hasExec) {
+    console.log(chalk.blue.bold('🤖 AGENT-X Task Orchestrator'));
+    console.log(chalk.gray('='.repeat(40)));
+    console.log('\nThis is the Agent Orchestrator. You can use it in several ways:');
+    console.log('\n1. Run a task directly:');
+    console.log('   node agent-orchestrator.js "Your task description"');
+    console.log('\n2. Run a shell command and analyze its output:');
+    console.log('   node agent-orchestrator.js --exec "your-command" [--cwd <directory>] [--timeout <ms>]');
+    console.log('\n3. Show help:');
+    console.log('   node agent-orchestrator.js --help');
+    return;
+  }
+
+  if ((!hasExec && args.length === 0) || args.includes('--help')) {
+    console.log(chalk.cyan.bold('🤖 AGENT-X Orchestrator'));
     console.log('');
     console.log('Usage:');
     console.log('  node src/core/orchestrators/agent-orchestrator.js <task> [options]');
+    console.log('  node src/core/orchestrators/agent-orchestrator.js --exec "<command> [args]" [--cwd <dir>] [--timeout <ms>]');
     console.log('');
     console.log('Examples:');
     console.log('  node src/core/orchestrators/agent-orchestrator.js "Add error handling to server.js"');
     console.log('  node src/core/orchestrators/agent-orchestrator.js "Create unit tests for utils.js" --file utils.js');
     console.log('  node src/core/orchestrators/agent-orchestrator.js "Document the API endpoints" --show-thinking');
+    console.log('  node src/core/orchestrators/agent-orchestrator.js --exec "npm run test" --timeout 60000');
     return;
   }
 
-  const task = args.join(' ');
+  const model = args.includes('--120b') ? '120b' : '20b';
+  const orchestrator = new AgentOrchestrator({ model });
+
+  if (hasExec) {
+    const execIndex = args.indexOf('--exec');
+    const commandString = args[execIndex + 1] || '';
+    const cwdIndex = args.indexOf('--cwd');
+    const timeoutIndex = args.indexOf('--timeout');
+    const cwd = cwdIndex !== -1 ? args[cwdIndex + 1] : process.cwd();
+    const timeout = timeoutIndex !== -1 ? parseInt(args[timeoutIndex + 1], 10) : 0;
+
+    if (!commandString) {
+      console.error(chalk.red('❌ Missing command after --exec'));
+      process.exit(1);
+    }
+
+    // Basic split, users can quote args; shell:true already handles most
+    const [cmd, ...cmdArgs] = commandString.split(' ');
+    const result = await orchestrator.runCommand(cmd, cmdArgs, { cwd, timeout });
+    const analysis = await orchestrator.analyzeCommandOutput(commandString, result);
+    console.log(chalk.green.bold('\n✅ Analysis:'));
+    console.log(analysis);
+    return;
+  }
+
   const showThinking = args.includes('--show-thinking');
   const fileIndex = args.findIndex(arg => arg === '--file');
   const targetFile = fileIndex !== -1 ? args[fileIndex + 1] : null;
-  const model = args.includes('--120b') ? '120b' : '20b';
+  const task = args.join(' ');
 
-  const orchestrator = new AgentOrchestrator({ model });
   await orchestrator.orchestrateTask(task, { showThinking, targetFile });
 }
 

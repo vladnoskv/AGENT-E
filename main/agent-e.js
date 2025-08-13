@@ -34,15 +34,15 @@ function displayHeader() {
     ║                                                               ║
     ╚═══════════════════════════════════════════════════════════════╝
     `);
-  console.log(chalk.hex('#ffaa00').bold(`🚀 AGENT-E v1.0.0`));
+  console.log(chalk.hex('#ffaa00').bold(`🚀 AGENT-X v1.0.0`));
   console.log(chalk.hex('#888888')(`Powered by NVIDIA GPT-OSS-20B`));
   console.log(chalk.gray('────────────────────────────────────────────────────'));
   console.log('');
 }
 
 program
-  .name('agent-e')
-  .description('AGENT-E CLI - Multi-agent AI toolkit')
+  .name('AGENT-X')
+  .description('AGENT-X CLI - Multi-agent AI toolkit')
   .version('1.0.0');
 
 program
@@ -50,7 +50,7 @@ program
   .description('Start interactive chat mode')
   .action(async () => {
     displayHeader();
-    console.log(chalk.blue('🤖 Starting AGENT-E Chat Mode...'));
+    console.log(chalk.blue('🤖 Starting AGENT-X Chat Mode...'));
     
     const { mode } = await inquirer.prompt([
       {
@@ -130,7 +130,7 @@ program
     console.log(chalk.blue('🤖 Launching Interactive UI...'));
     
     try {
-      const { default: ui } = await import('./agent-e-i18n.js');
+      const { default: ui } = await import('./AGENT-X-i18n.js');
       await ui();
     } catch (error) {
       console.error(chalk.red('Error launching UI:'), error.message);

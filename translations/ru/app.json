@@ -1,8 +1,8 @@
 {
-  "error": "NOT_TRANSLATED",
-  "success": "NOT_TRANSLATED",
-  "title": "NOT_TRANSLATED",
-  "version": "NOT_TRANSLATED",
-  "welcome": "NOT_TRANSLATED",
-  "loading": "NOT_TRANSLATED"
+  "title": "[RU] Multi-Agent AI CLI Tool",
+  "version": "[RU] v0.0.1",
+  "welcome": "[RU] Welcome to AGENTX - Your Multi-Agent AI Assistant",
+  "loading": "[RU] Initializing AGENTX...",
+  "error": "[RU] An error occurred",
+  "success": "[RU] Operation completed successfully"
 }

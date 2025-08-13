@@ -1,6 +1,6 @@
 {
-  "completed": "NOT_TRANSLATED",
-  "failed": "NOT_TRANSLATED",
-  "starting": "NOT_TRANSLATED",
-  "processing": "NOT_TRANSLATED"
+  "starting": "[RU] Starting {operation}...",
+  "processing": "[RU] Processing... {current}/{total}",
+  "completed": "[RU] Completed {operation} in {time}ms",
+  "failed": "[RU] Failed to complete {operation}"
 }

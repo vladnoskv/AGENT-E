@@ -110,7 +110,7 @@ const App = () => {
     
     // Execute the selected command
     const child = spawn('node', [
-      path.join(__dirname, '..', '..', 'bin', 'agent-e.js'),
+      path.join(__dirname, '..', '..', 'bin', 'AGENT-X.js'),
       option.command,
       ...option.args
     ], {

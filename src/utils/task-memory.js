@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const CACHE_ROOT = join(process.cwd(), '.agent-e', 'cache');
+const CACHE_ROOT = join(process.cwd(), '.AGENT-X', 'cache');
 
 function ensureDir(dir) {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });

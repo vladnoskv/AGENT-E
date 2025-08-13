@@ -13,9 +13,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = __filename.substring(0, __filename.lastIndexOf('/'));
 
 const PROJECT_ROOT = process.cwd();
-const OUT_DIR = join(PROJECT_ROOT, '.agent-e', 'index');
+const OUT_DIR = join(PROJECT_ROOT, '.AGENT-X', 'index');
 
-const EXCLUDES = new Set(['node_modules', '.git', '.agent-e']);
+const EXCLUDES = new Set(['node_modules', '.git', '.AGENT-X']);
 const MAX_BYTES_TO_SAMPLE = 2048; // small snippet sample per file
 
 function ensureDir(dir) {
@@ -98,7 +98,8 @@ async function main() {
   setCurrentTaskId(taskId);
 
   console.log(chalk.green(`\n✅ Indexed ${files.length} files. Index: ${outPath}`));
-  console.log(chalk.gray('Use this taskId when running tools that need context.'));
+  console.log(chalk.cyan(`\nTask ID: ${taskId}`));
+  console.log(chalk.yellow('Use this taskId when running tools that need context.'));
 }
 
 main().catch((err) => {

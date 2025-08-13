@@ -29,7 +29,7 @@ const displayHeader = () => {
     ║                                                               ║
     ╚═══════════════════════════════════════════════════════════════╝
     `);
-    console.log(chalk.hex('#ffaa00').bold(`🚀 AGENT-E v0.0.1 (alpha)`));
+    console.log(chalk.hex('#ffaa00').bold(`🚀 AGENT-X v0.0.1 (alpha)`));
     console.log(chalk.hex('#888888')(`Powered by NVIDIA GPT-OSS-20B`));
     console.log(chalk.hex('#444444')('════════════════════════════════════════════════════════════════'));
     console.log();
@@ -37,9 +37,10 @@ const displayHeader = () => {
 
 function showHelp() {
     displayHeader();
-    console.log(chalk.blue.bold('Usage: agent-e <command>'));
+    console.log(chalk.blue.bold('Usage: AGENT-X <command>'));
     console.log('');
     console.log('Commands:');
+    console.log('  ui        - Start the Ink-based UI');
     console.log('  chat      - Start interactive chat mode');
     console.log('  response  - Get direct response');
     console.log('  menu      - Show interactive menu');
@@ -50,14 +51,15 @@ function showHelp() {
     console.log('  help      - Show this help message');
     console.log('');
     console.log('Examples:');
-    console.log('  agent-e chat');
-    console.log('  agent-e response "What is Node.js?"');
-    console.log('  agent-e menu');
-    console.log('  agent-e expert');
+    console.log('  AGENT-X chat');
+    console.log('  AGENT-X response "What is Node.js?"');
+    console.log('  AGENT-X menu');
+    console.log('  AGENT-X expert');
 }
 
 function runCommand(command, args = []) {
     const commandMap = {
+        'ui': join(__dirname, '..', 'src', 'commands', 'ink-interface.jsx'),
         'chat': join(__dirname, '..', 'src', 'commands', 'chat.js'),
         'response': join(__dirname, '..', 'src', 'commands', 'response.js'),
         'menu': join(__dirname, '..', 'src', 'commands', 'menu.js'),
@@ -92,8 +94,8 @@ const command = process.argv[2];
 const args = process.argv.slice(3);
 
 if (!command) {
-    // Default to interactive menu for better UX
-    runCommand('menu', []);
+    // Default to Ink UI for better UX
+    runCommand('ui', []);
 } else {
     runCommand(command, args);
 }

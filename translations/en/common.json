@@ -2,8 +2,8 @@
   "app": {
     "title": "Multi-Agent AI CLI Tool",
     "version": "v0.0.1",
-    "welcome": "Welcome to AGENT-E - Your Multi-Agent AI Assistant",
-    "loading": "Initializing AGENT-E...",
+    "welcome": "Welcome to AGENT-X - Your Multi-Agent AI Assistant",
+    "loading": "Initializing AGENT-X...",
     "error": "An error occurred",
     "success": "Operation completed successfully"
   },
@@ -75,7 +75,7 @@
     "select_language": "Select your preferred language:",
     "current_language": "Current language: {language}",
     "save": "Save Settings",
-    "restart_required": "Please restart AGENT-E to apply language changes"
+    "restart_required": "Please restart AGENT-X to apply language changes"
   },
   "errors": {
     "api_key_missing": "NVIDIA API key not found. Please set NVIDIA_API_KEY environment variable.",

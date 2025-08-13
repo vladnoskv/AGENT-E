@@ -1,24 +1,11 @@
 #!/usr/bin/env node
 
-import OpenAI from 'openai';
 import dotenv from 'dotenv';
 import chalk from 'chalk';
 import { createInterface } from 'readline';
+import NvidiaClient from '../core/api/nvidia.js';
 
 dotenv.config();
-
-const apiKey = process.env.NVIDIA_API_KEY || process.env.api_key;
-
-if (!apiKey) {
-  console.error(chalk.red('❌ Error: NVIDIA_API_KEY or api_key not found in .env file'));
-  console.log(chalk.yellow('💡 Add to .env: NVIDIA_API_KEY="your-key-here"'));
-  process.exit(1);
-}
-
-const openai = new OpenAI({
-  apiKey: apiKey.replace(/"/g, '').trim(),
-  baseURL: 'https://integrate.api.nvidia.com/v1',
-});
 
 async function responseMode() {
   console.log(chalk.blue.bold('🤖 NVIDIA GPT-OSS-20B Response Mode'));
@@ -48,17 +35,13 @@ async function responseMode() {
 
     try {
       console.log(chalk.blue('🤖 Processing...'));
-      
-      const response = await openai.responses.create({
-        model: "openai/gpt-oss-20b",
-        input: [message],
-        max_output_tokens: 1024,
+      const client = new NvidiaClient();
+      const output = await client.respond(message, {
         temperature: 0.7,
         top_p: 0.9,
+        max_output_tokens: 1024,
       });
-
-      console.log(chalk.green('AI: ') + response.output_text + '\n');
-      
+      console.log(chalk.green('AI: ') + output + '\n');
     } catch (error) {
       console.error(chalk.red('❌ Error:'), error.message);
     }
@@ -74,15 +57,13 @@ async function responseMode() {
 
 async function singleResponse(message) {
   try {
-    const response = await openai.responses.create({
-      model: "openai/gpt-oss-20b",
-      input: [message],
-      max_output_tokens: 1024,
+    const client = new NvidiaClient();
+    const output = await client.respond(message, {
       temperature: 0.7,
       top_p: 0.9,
+      max_output_tokens: 1024,
     });
-
-    console.log(response.output_text);
+    console.log(output);
   } catch (error) {
     console.error(chalk.red('❌ Error:'), error.message);
     process.exit(1);

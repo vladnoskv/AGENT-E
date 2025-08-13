@@ -1,0 +1,9 @@
+{
+  "select_path": "[RU] Select a path to analyze:",
+  "reading": "[RU] Reading files...",
+  "analyzing": "[RU] Analyzing codebase...",
+  "generating": "[RU] Generating output...",
+  "complete": "[RU] Analysis complete!",
+  "file_count": "[RU] Found {count} files",
+  "no_files": "[RU] No files found in the specified path"
+}

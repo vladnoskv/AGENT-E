@@ -1,0 +1,26 @@
+# Core dependencies
+aiohttp>=3.8.0
+python-dotenv>=0.19.0
+numpy>=1.21.0
+rich>=13.0.0
+pydantic>=2.0.0
+Pillow>=9.0.0
+
+# For async/await support
+nest-asyncio>=1.5.6
+
+# NVIDIA NIM API client
+# nvidia-nim will be added when officially available on PyPI
+
+# CLI and Utilities
+click>=8.0.0
+python-multipart>=0.0.5  # For file uploads
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# Development
+black>=23.0.0
+isort>=5.12.0
+mypy>=1.0.0900

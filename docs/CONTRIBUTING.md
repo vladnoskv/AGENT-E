@@ -1,6 +1,6 @@
-# 🤝 Contributing to AGENT-E
+# 🤝 Contributing to AGENT-X
 
-Thank you for your interest in contributing to AGENT-E! This guide will help you get started with contributing to our multi-agent AI system.
+Thank you for your interest in contributing to AGENT-X! This guide will help you get started with contributing to our multi-agent AI system.
 
 ## 🚀 Quick Start
 
@@ -12,8 +12,8 @@ Thank you for your interest in contributing to AGENT-E! This guide will help you
 ### Development Setup
 ```bash
 # 1. Fork the repository
-git clone https://github.com/vladnoskv/agent-e.git
-cd agent-e
+git clone https://github.com/vladnoskv/AGENT-X.git
+cd AGENT-X
 
 # 2. Install dependencies
 npm install
@@ -134,7 +134,7 @@ npm test -- --grep "CodeAnalyzer"
 ```
 agentx/
 ├── main/                    # CLI entry points
-│   ├── agent-e.js          # Main CLI application
+│   ├── AGENT-X.js          # Main CLI application
 │   └── multi-agent.js      # Multi-agent orchestration
 ├── utils/                   # Core utilities
 │   ├── agent.js           # Agent base class
@@ -143,7 +143,7 @@ agentx/
 │   ├── master-agent.md
 │   └── agents/
 ├── components/              # UI components
-│   ├── header.js          # AGENT-E header
+│   ├── header.js          # AGENT-X header
 │   └── menu.js            # Interactive menu
 ├── tests/                   # Test suites
 ├── .github/                 # GitHub workflows
@@ -292,8 +292,8 @@ npm run profile
 ### Communication Channels
 - **GitHub Issues**: Bug reports and feature requests
 - **GitHub Discussions**: Questions and ideas
-- **Discord**: [AGENT-E Community](https://discord.gg/agent-e)
-- **Email**: maintainers@agent-e.dev
+- **Discord**: [AGENT-X Community](https://discord.gg/AGENT-X)
+- **Email**: maintainers@AGENT-X.dev
 
 ### Before Asking for Help
 1. **Check existing issues**
@@ -318,10 +318,10 @@ Outstanding contributors will be:
 
 ## 📄 License
 
-By contributing to AGENT-E, you agree that your contributions will be licensed under the MIT License.
+By contributing to AGENT-X, you agree that your contributions will be licensed under the MIT License.
 
 ---
 
 **Happy coding!** 🚀
 
-**Questions?** Open an issue or join our [Discord community](https://discord.gg/agent-e)
+**Questions?** Open an issue or join our [Discord community](https://discord.gg/AGENT-X)

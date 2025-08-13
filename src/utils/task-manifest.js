@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
-const TASKS_DIR = join(process.cwd(), '.agent-e', 'tasks');
+const TASKS_DIR = join(process.cwd(), '.AGENT-X', 'tasks');
 
 function ensureDir() {
   if (!existsSync(TASKS_DIR)) mkdirSync(TASKS_DIR, { recursive: true });

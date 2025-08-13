@@ -1,8 +1,8 @@
 {
-  "save": "NOT_TRANSLATED",
-  "title": "NOT_TRANSLATED",
-  "language": "NOT_TRANSLATED",
-  "select_language": "NOT_TRANSLATED",
-  "current_language": "NOT_TRANSLATED",
-  "restart_required": "NOT_TRANSLATED"
+  "title": "[RU] Settings",
+  "language": "[RU] Language",
+  "select_language": "[RU] Select your preferred language:",
+  "current_language": "[RU] Current language: {language}",
+  "save": "[RU] Save Settings",
+  "restart_required": "[RU] Please restart AGENTX to apply language changes"
 }

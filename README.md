@@ -1,6 +1,294 @@
-# 🤖 AGENT-E - Agent Everything - Enhanced NVIDIA GPT-OSS-20B CLI
+# 🤖 AGENT-X - Multi-Model AI Orchestration CLI
 
-A sophisticated multi-agent CLI system that orchestrates specialized agents for complex tasks, built on NVIDIA's GPT-OSS-20B API.
+A powerful command-line interface for orchestrating multiple specialized AI models from NVIDIA's NIM API, including LLMs, retrieval models, and visual models.
+
+## 🚀 Features
+
+- **Interactive Menu System**: Easy-to-use terminal interface
+- **Multi-Model Support**: Seamlessly switch between different AI models
+- **Code Generation**: Specialized support for code generation with StarCoder2
+- **Specialized Retrieval**: Advanced document processing with hybrid search
+- **Visual Models**: Image generation and analysis capabilities
+- **Extensible Architecture**: Easy to add new models and capabilities
+- **Asynchronous Processing**: Efficient handling of multiple requests
+- **Configuration Management**: Environment-based configuration
+
+## 🛠 Installation
+
+### Option 1: Install from source
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/agentx.git
+   cd agentx
+   ```
+
+2. Install the package in development mode:
+   ```bash
+   pip install -e .
+   ```
+
+### Option 2: Install directly
+
+```bash
+pip install git+https://github.com/yourusername/agentx.git
+```
+
+### Configuration
+
+Create a `.env` file in the project root with your NVIDIA API key:
+```
+NVIDIA_API_KEY=your-nvidia-api-key-here
+```
+
+## 🚦 Quick Start
+
+### Interactive Mode
+
+Launch the interactive menu:
+```bash
+agentx
+```
+
+### Command Line Usage
+
+#### List available models:
+```bash
+agentx --list-models
+```
+
+#### Run a text generation model:
+```bash
+agentx --model dbrx-instruct --prompt "Explain quantum computing in simple terms"
+```
+
+#### Test connection to all models:
+```bash
+agentx --test-all
+```
+
+#### Show current configuration:
+```bash
+agentx --config
+```
+
+### Available Models
+
+- **Code Generation**:
+  - `starcoder2-15b`: BigCode's StarCoder2 15B for code generation and completion
+  - `codegemma-7b`: Google's CodeGemma 7B for code generation
+
+- **Text Generation**:
+  - `dbrx-instruct`: Databricks DBRX Instruct for general purpose chat
+  - `gemma-2-7b-it`: Google's Gemma 2 7B model for general purpose chat
+
+- **Retrieval Models**:
+  - `nv-embed-v1`: NVIDIA's general-purpose embedding model
+  - `nemo-retriever`: NVIDIA's NeMo Retriever for hybrid search
+  - `nemo-reranker`: NVIDIA's NeMo Reranker for improving search results
+
+- **Visual Models**:
+  - `flux-1`: Black Forest Labs' Flux 1.0 for image generation
+  - `bria-2.3`: BRIA AI's 2.3 for high-quality image generation
+  - `ai-detector`: Model for detecting AI-generated images
+
+## 📚 Documentation
+
+### Interactive Menu
+
+The interactive menu provides an easy way to explore and use all features:
+
+1. **List Available Models**: View all registered models with descriptions
+2. **Run a Model**: Select a model and provide a prompt
+3. **Test Connection**: Verify connectivity to a specific model
+4. **Configuration**: View current settings
+5. **Exit**: Close the application
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NVIDIA_API_KEY` | Your NVIDIA API key | Required |
+| `NIM_API_BASE_URL` | Base URL for NIM API | `https://api.nvidia.com/nim` |
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- NVIDIA for their amazing AI models and APIs
+- The open-source community for valuable contributions and feedback
+python cli.py run nv-embed-v1 --file document.txt --output embeddings.json
+```
+
+## 📚 Model Types
+
+### 1. Large Language Models (LLM)
+- `dbrx-instruct`: General purpose instruction following
+- `codegemma-7b`: Specialized for code generation and understanding
+- `gemma-2-7b`: High-quality general purpose model
+
+### 2. Retrieval Models
+- `nv-embed-v1`: General-purpose text embeddings
+- `nemo-retriever`: Hybrid search with NeMo Retriever
+- `nemo-reranker`: Advanced result reranking
+- `nv-embedqa-1b`: Specialized for question answering
+
+### 3. Visual Models
+- `flux-1`: High-quality image generation
+- `bria-2.3`: Advanced image generation with fine control
+- `ai-detector`: Detect AI-generated images
+
+## 🔧 Advanced Usage
+
+### Using Model Parameters
+Most models accept additional parameters. For example, to control temperature and max tokens:
+```bash
+python cli.py run dbrx-instruct --prompt "Write a short story" --params '{"temperature": 0.7, "max_tokens": 500}'
+```
+
+### Batch Processing
+Process multiple inputs from a file:
+```bash
+# Create an input file
+cat > prompts.txt << EOL
+A serene mountain landscape
+A busy city street at night
+An underwater coral reef
+EOL
+
+# Process each line as a separate prompt
+while IFS= read -r line; do
+    python cli.py run flux-1 --prompt "$line" --output "output_${RANDOM}.png"
+done < prompts.txt
+```
+
+## 🧩 Extending the System
+
+### Adding a New Model
+1. Create a new model class in the appropriate module (llm, retrieval, or visual)
+2. Register it in the `ModelRegistry` class in `models/registry.py`
+3. The model will automatically be available through the CLI
+
+### Custom Model Parameters
+Each model can define its own parameters in the registry:
+```python
+self.register_model(
+    name="my-model",
+    description="My custom model",
+    model_class=MyCustomModel,
+    model_type=ModelType.LLM,
+    default_params={
+        "temperature": 0.7,
+        "max_tokens": 1000
+    }
+)
+```
+
+## 🌍 Internationalization (i18n) Support
+
+The application includes built-in support for internationalization using the i18ntk library. This allows for easy translation of all user-facing text into multiple languages.
+
+### Available Languages
+
+Currently supported languages:
+- English (en) - Default
+- Russian (ru) - Русский
+
+### Using Translations in Code
+
+1. **Initialize the i18n system** in your application's entry point:
+
+```javascript
+import i18n from './src/utils/i18n';
+
+// Initialize with default language
+await i18n.init({
+  language: 'en', // Default language
+  fallbackLanguage: 'en', // Fallback if translation is missing
+  preload: true // Preload all languages
+});
+```
+
+2. **Translate text** in your components:
+
+```javascript
+import { t, tPlural } from './src/utils/i18n';
+
+// Simple translation
+const greeting = t('common.greeting', { name: 'User' });
+// Output: "Hello, User!" (en) or "Привет, User!" (ru)
+
+// Pluralization
+const messageCount = 5;
+const messages = tPlural('common.messages', messageCount, { count: messageCount });
+// Output: "5 messages" (en) or "5 сообщений" (ru)
+```
+
+3. **Change language** at runtime:
+
+```javascript
+import { changeLanguage, getAvailableLanguages } from './src/utils/i18n';
+
+// Get available languages
+const languages = getAvailableLanguages(); // ['en', 'ru']
+
+// Change language
+await changeLanguage('ru');
+```
+
+### Adding New Languages
+
+1. Create a new directory in the `translations` folder with the language code (e.g., `es` for Spanish)
+2. Add JSON files with the same names as in the `en` directory
+3. Add your translations following the same structure as the English files
+
+Example for Spanish (`es/common.json`):
+```json
+{
+  "greeting": "¡Hola, {name}!",
+  "welcome": "Bienvenido a nuestra aplicación",
+  "messages": {
+    "one": "Tienes 1 mensaje",
+    "other": "Tienes {count} mensajes"
+  }
+}
+```
+
+### Translation File Structure
+
+The translations are organized by language code and namespace. Each namespace corresponds to a feature or section of the application.
+
+```
+translations/
+├── en/                 # English translations
+│   ├── common.json     # Common strings used across the app
+│   ├── chat.json       # Chat interface translations
+│   └── ...
+└── ru/                # Russian translations
+    ├── common.json
+    ├── chat.json
+    └── ...
+```
+
+### Best Practices
+
+1. **Use namespacing**: Group related translations under specific namespaces (e.g., 'common', 'chat', 'settings')
+2. **Keep keys consistent**: Use the same keys across all language files
+3. **Use parameters**: For dynamic content, use parameters (e.g., `Hello, {name}!`)
+4. **Handle plurals**: Use the `tPlural` function for count-based pluralization
+5. **Fallback**: Always provide a default value for missing translations
 
 ## 🚀 Quick Start
 
@@ -24,7 +312,7 @@ cp .env.example .env
 ### Interactive Menu System
 ```bash
 node menu.js        # Main menu with all options
-node agent-e.js     # Alias for menu
+node AGENT-X.js     # Alias for menu
 ```
 
 ### Direct Commands

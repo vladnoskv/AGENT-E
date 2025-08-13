@@ -1,11 +1,11 @@
-# 🎉 AGENT-E v0.0.1 - Initial Release
+# 🎉 AGENT-X v0.0.1 - Initial Release
 
-We're excited to announce the first public release of AGENT-E, a sophisticated multi-agent AI system designed to revolutionize software development workflows!
+We're excited to announce the first public release of AGENT-X, a sophisticated multi-agent AI system designed to revolutionize software development workflows!
 
 ## 🌟 What's New
 
 ### **🎨 Visual Interface**
-- **Rainbow AGENT-E Header**: Beautiful gradient display with ASCII art
+- **Rainbow AGENT-X Header**: Beautiful gradient display with ASCII art
 - **Interactive Menu System**: Navigate with arrow keys and Enter
 - **Real-time Chat Interface**: Direct conversations with any agent
 - **Progress Indicators**: Visual feedback during operations
@@ -41,14 +41,14 @@ We're excited to announce the first public release of AGENT-E, a sophisticated m
 ### Quick Installation
 ```bash
 # Global install
-npm install -g agent-e
+npm install -g AGENT-X
 
 # Or run directly
-npx agent-e
+npx AGENT-X
 ```
 
 ### First Steps
-1. **Launch AGENT-E**: `agent-e`
+1. **Launch AGENT-X**: `AGENT-X`
 2. **Select "List Agents"** to see all available agents
 3. **Choose "Chat with Agent"** to start a conversation
 4. **Try "Analyze Codebase"** to analyze your project
@@ -57,22 +57,22 @@ npx agent-e
 
 ### Code Analysis
 ```bash
-agent-e analyze --path ./my-project --agent code-analyzer
+AGENT-X analyze --path ./my-project --agent code-analyzer
 ```
 
 ### Bug Fixing
 ```bash
-agent-e chat --agent bug-fixer --file ./app.js
+AGENT-X chat --agent bug-fixer --file ./app.js
 ```
 
 ### Documentation Generation
 ```bash
-agent-e docs --path ./src --output ./README.md
+AGENT-X docs --path ./src --output ./README.md
 ```
 
 ## 🏗️ Architecture
 
-AGENT-E uses a sophisticated multi-agent architecture:
+AGENT-X uses a sophisticated multi-agent architecture:
 
 ```
 User Input → Master Agent → Parallel Agent Processing → Synthesis → Final Response
@@ -94,7 +94,7 @@ export AGENTE_LOG_LEVEL="info"
 ```
 
 ### Configuration File
-Create `agent-e.config.json` for custom settings:
+Create `AGENT-X.config.json` for custom settings:
 ```json
 {
   "api_key": "your-nvidia-api-key",
@@ -119,7 +119,7 @@ npm run test:integration
 
 ## 📦 Package Contents
 
-- **agent-e**: Main CLI entry point
+- **AGENT-X**: Main CLI entry point
 - **multi-agent.js**: Multi-agent orchestration
 - **agent.js**: Single agent implementation
 - **prompts/**: Agent personality definitions
@@ -155,11 +155,11 @@ npm run test:integration
 ## 📞 Support
 
 - **Documentation**: [USAGE.md](USAGE.md)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/agent-e/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/agent-e/discussions)
+- **Issues**: [GitHub Issues](https://github.com/yourusername/AGENT-X/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/AGENT-X/discussions)
 
 ---
 
-**Ready to supercharge your development workflow? Try AGENT-E today!** 🚀
+**Ready to supercharge your development workflow? Try AGENT-X today!** 🚀
 
-**Download**: [v0.0.1 Release](https://github.com/yourusername/agent-e/releases/tag/v0.0.1)
+**Download**: [v0.0.1 Release](https://github.com/yourusername/AGENT-X/releases/tag/v0.0.1)

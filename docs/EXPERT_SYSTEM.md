@@ -1,4 +1,4 @@
-# 🎯 AGENT-E Expert System - Hyper-Specialized AI Agents
+# 🎯 AGENT-X Expert System - Hyper-Specialized AI Agents
 
 ## Overview
 
