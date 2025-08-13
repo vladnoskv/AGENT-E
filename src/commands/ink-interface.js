@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { render, Box, Text, useInput, useApp, Newline } from 'ink';
 import chalk from 'chalk';
-import { Header } from './header.js';
+import { Header } from '../header.js';
 
 // Ink-based CLI Interface
 const App = () => {
@@ -48,19 +48,19 @@ const App = () => {
         
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = dirname(__filename);
-        
-        let script;
-        switch (index) {
-            case 0: script = 'chat.js'; break;
-            case 1: script = 'response.js'; break;
-            case 2: script = 'agent-orchestrator.js'; break;
-            case 3: script = 'test-agent-system.js'; break;
-            case 4: script = 'expert-agent-system.js'; break;
-            case 5: script = 'knowledge-updater.js'; break;
-            case 6: exit(); return;
-        }
-        
-        const child = spawn('node', [join(__dirname, script)], {
+
+        const scriptMap = {
+            0: join(__dirname, 'chat.js'),
+            1: join(__dirname, 'response.js'),
+            2: join(__dirname, '..', '..', 'src', 'core', 'orchestrators', 'agent-orchestrator.js'),
+            3: join(__dirname, '..', '..', 'test-agent-system.js'),
+            4: join(__dirname, '..', '..', 'src', 'agents', 'expert', 'hyper-expert-orchestrator.js'),
+            5: join(__dirname, '..', '..', 'knowledge-updater.js')
+        };
+
+        if (index === 6) { exit(); return; }
+
+        const child = spawn('node', [scriptMap[index]], {
             stdio: 'inherit'
         });
         

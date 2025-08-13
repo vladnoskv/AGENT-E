@@ -44,12 +44,12 @@ const menuOptions = [
 
 const runScript = (scriptName) => {
   const scriptMap = {
-    'chat': '../../../chat.js',
-    'response': '../../../response.js',
-    'agent': '../../../agent-orchestrator.js',
-    'test': '../../../test-agent-system.js',
-    'expert': '../../../expert-agent-system.js',
-    'update-knowledge': '../../../knowledge-updater.js'
+    'chat': join(__dirname, '..', '..', 'chat.js'),
+    'response': join(__dirname, '..', '..', 'response.js'),
+    'agent': join(__dirname, '..', '..', 'src', 'core', 'orchestrators', 'agent-orchestrator.js'),
+    'test': join(__dirname, '..', '..', 'test-agent-system.js'),
+    'expert': join(__dirname, '..', '..', 'src', 'agents', 'expert', 'hyper-expert-orchestrator.js'),
+    'update-knowledge': join(__dirname, '..', '..', 'knowledge-updater.js')
   };
 
   if (scriptName === 'exit') {
@@ -57,7 +57,7 @@ const runScript = (scriptName) => {
     process.exit(0);
   }
 
-  const scriptPath = join(__dirname, scriptMap[scriptName]);
+  const scriptPath = scriptMap[scriptName];
   
   console.log(chalk.yellow(`\n🚀 Launching ${menuOptions.find(opt => opt.action === scriptName)?.name || scriptName}...\n`));
   

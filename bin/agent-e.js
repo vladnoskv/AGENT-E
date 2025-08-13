@@ -45,6 +45,8 @@ function showHelp() {
     console.log('  menu      - Show interactive menu');
     console.log('  agent     - Multi-agent orchestrator');
     console.log('  expert    - Hyper-expert AI agents');
+    console.log('  test      - Run legacy test suite');
+    console.log('  update-knowledge - Update expert knowledge');
     console.log('  help      - Show this help message');
     console.log('');
     console.log('Examples:');
@@ -56,11 +58,13 @@ function showHelp() {
 
 function runCommand(command, args = []) {
     const commandMap = {
-        'chat': './src/commands/chat.js',
-        'response': './src/commands/response.js',
-        'menu': './src/commands/menu.js',
-        'agent': './src/agents/orchestrator.js',
-        'expert': './src/agents/expert-system.js'
+        'chat': join(__dirname, '..', 'chat.js'),
+        'response': join(__dirname, '..', 'response.js'),
+        'menu': join(__dirname, '..', 'src', 'commands', 'menu.js'),
+        'agent': join(__dirname, '..', 'src', 'core', 'orchestrators', 'agent-orchestrator.js'),
+        'expert': join(__dirname, '..', 'src', 'agents', 'expert', 'hyper-expert-orchestrator.js'),
+        'test': join(__dirname, '..', 'test-agent-system.js'),
+        'update-knowledge': join(__dirname, '..', 'knowledge-updater.js')
     };
 
     if (command === 'help' || !commandMap[command]) {
@@ -68,7 +72,7 @@ function runCommand(command, args = []) {
         process.exit(0);
     }
 
-    const scriptPath = join(__dirname, '..', commandMap[command]);
+    const scriptPath = commandMap[command];
     
     if (args.length > 0) {
         spawn('node', [scriptPath, ...args], {
@@ -87,8 +91,8 @@ const command = process.argv[2];
 const args = process.argv.slice(3);
 
 if (!command) {
-    showHelp();
-    process.exit(0);
+    // Default to interactive menu for better UX
+    runCommand('menu', []);
+} else {
+    runCommand(command, args);
 }
-
-runCommand(command, args);

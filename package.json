@@ -2,17 +2,17 @@
   "name": "agent-e",
   "version": "0.0.1",
   "description": "Agent Everything - Multi-agent AI CLI system with NVIDIA GPT-OSS-20B integration",
-  "main": "./src/commands/chat.js",
+  "main": "./bin/agent-e.js",
   "type": "module",
   "scripts": {
     "start": "node bin/agent-e.js",
     "dev": "nodemon bin/agent-e.js",
     "menu": "node bin/agent-e.js menu",
-    "chat": "node bin/agent-e.js chat",
-    "response": "node bin/agent-e.js response",
-    "agent": "node bin/agent-e.js agent",
-    "expert": "node bin/agent-e.js expert",
-    "update-knowledge": "node bin/agent-e.js update-knowledge",
+    "chat": "node chat.js",
+    "response": "node response.js",
+    "agent": "node src/core/orchestrators/agent-orchestrator.js",
+    "expert": "node src/agents/expert/hyper-expert-orchestrator.js",
+    "update-knowledge": "node knowledge-updater.js",
     "test": "node ./tests/test-agent-system.js",
     "test-expert": "node ./tests/test-expert-system.js",
     "ink": "node bin/agent-e.js"
@@ -26,11 +26,14 @@
   ],
   "bin": {
     "agent-e": "./bin/agent-e.js",
-    "agent-e-chat": "./src/commands/chat.js",
-    "agent-e-response": "./src/commands/response.js"
+    "agent-e-chat": "./chat.js",
+    "agent-e-response": "./response.js"
   },
   "author": "",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "openai": "^4.28.0",
     "dotenv": "^16.3.1",
