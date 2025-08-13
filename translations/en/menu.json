@@ -1,0 +1,18 @@
+{
+  "title": "Main Menu",
+  "select_option": "Select an option",
+  "back": "← Back",
+  "quit": "Quit",
+  "cancel": "Cancel",
+  "continue": "Continue",
+  "options": {
+    "chat_with_agent": "💬 Chat with Agent",
+    "list_agents": "🤖 List Available Agents",
+    "analyze_codebase": "📊 Analyze Codebase",
+    "generate_docs": "📝 Generate Documentation",
+    "fix_bugs": "🐛 Fix Bugs",
+    "security_scan": "🔒 Security Scan",
+    "settings": "⚙️ Settings",
+    "help": "❓ Help"
+  }
+}

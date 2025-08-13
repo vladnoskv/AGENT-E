@@ -1,0 +1,8 @@
+{
+  "title": "Chat with {agent}",
+  "prompt": "Enter your message (or 'quit' to exit):",
+  "thinking": "{agent} is thinking...",
+  "response": "{agent} says:",
+  "error": "Failed to get response from {agent}",
+  "disconnected": "Chat session ended"
+}

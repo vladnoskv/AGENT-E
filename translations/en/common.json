@@ -1,0 +1,113 @@
+{
+  "app": {
+    "title": "Multi-Agent AI CLI Tool",
+    "version": "v0.0.1",
+    "welcome": "Welcome to AGENT-E - Your Multi-Agent AI Assistant",
+    "loading": "Initializing AGENT-E...",
+    "error": "An error occurred",
+    "success": "Operation completed successfully"
+  },
+  "menu": {
+    "title": "Main Menu",
+    "select_option": "Select an option",
+    "back": "← Back",
+    "quit": "Quit",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "options": {
+      "chat_with_agent": "💬 Chat with Agent",
+      "list_agents": "🤖 List Available Agents",
+      "analyze_codebase": "📊 Analyze Codebase",
+      "generate_docs": "📝 Generate Documentation",
+      "fix_bugs": "🐛 Fix Bugs",
+      "security_scan": "🔒 Security Scan",
+      "settings": "⚙️ Settings",
+      "help": "❓ Help"
+    }
+  },
+  "agents": {
+    "title": "Available Agents",
+    "master": {
+      "name": "Master Agent",
+      "description": "Orchestrates tasks and synthesizes responses from all agents"
+    },
+    "code_analyzer": {
+      "name": "Code Analyzer",
+      "description": "Analyzes code quality, patterns, and best practices"
+    },
+    "documentation_writer": {
+      "name": "Documentation Writer",
+      "description": "Generates comprehensive documentation and guides"
+    },
+    "bug_fixer": {
+      "name": "Bug Fixer",
+      "description": "Identifies and fixes bugs with detailed explanations"
+    },
+    "architect": {
+      "name": "Architect",
+      "description": "Provides system design and architecture guidance"
+    },
+    "security_expert": {
+      "name": "Security Expert",
+      "description": "Performs security analysis and vulnerability assessment"
+    }
+  },
+  "chat": {
+    "title": "Chat with {agent}",
+    "prompt": "Enter your message (or 'quit' to exit):",
+    "thinking": "{agent} is thinking...",
+    "response": "{agent} says:",
+    "error": "Failed to get response from {agent}",
+    "disconnected": "Chat session ended"
+  },
+  "file_operations": {
+    "select_path": "Select a path to analyze:",
+    "reading": "Reading files...",
+    "analyzing": "Analyzing codebase...",
+    "generating": "Generating output...",
+    "complete": "Analysis complete!",
+    "file_count": "Found {count} files",
+    "no_files": "No files found in the specified path"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "select_language": "Select your preferred language:",
+    "current_language": "Current language: {language}",
+    "save": "Save Settings",
+    "restart_required": "Please restart AGENT-E to apply language changes"
+  },
+  "errors": {
+    "api_key_missing": "NVIDIA API key not found. Please set NVIDIA_API_KEY environment variable.",
+    "network_error": "Network error occurred. Please check your connection.",
+    "file_not_found": "File or directory not found: {path}",
+    "permission_denied": "Permission denied accessing: {path}",
+    "invalid_input": "Invalid input provided",
+    "timeout": "Operation timed out"
+  },
+  "progress": {
+    "starting": "Starting {operation}...",
+    "processing": "Processing... {current}/{total}",
+    "completed": "Completed {operation} in {time}ms",
+    "failed": "Failed to complete {operation}"
+  },
+  "ui": {
+    "navigation": {
+      "use_arrow_keys": "Use ↑↓ arrow keys to navigate",
+      "press_enter": "Press Enter to select",
+      "press_esc": "Press Esc to go back",
+      "press_q": "Press Q to quit"
+    },
+    "loading": {
+      "spinner": "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏",
+      "text": "Loading..."
+    },
+    "colors": {
+      "success": "✅",
+      "error": "❌",
+      "warning": "⚠️",
+      "info": "ℹ️",
+      "question": "❓"
+    }
+  }
+}

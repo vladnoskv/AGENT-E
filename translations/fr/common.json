@@ -1,0 +1,120 @@
+{
+  "app": {
+    "title": "Outil CLI Multi-Agent IA",
+    "version": "v0.0.1",
+    "welcome": "Bienvenue dans votre assistant de développement alimenté par IA",
+    "loading": "chargement",
+    "error": "[FR] An error occurred",
+    "success": "[FR] Operation completed successfully"
+  },
+  "menu": {
+    "title": "Menu Principal",
+    "select_option": "[FR] Select an option",
+    "back": "[FR] ← Back",
+    "quit": "[FR] Quit",
+    "cancel": "[FR] Cancel",
+    "continue": "[FR] Continue",
+    "options": {
+      "chat_with_agent": "Discuter avec un agent",
+      "list_agents": "Lister les agents disponibles",
+      "analyze_codebase": "Analyser la base de code",
+      "generate_docs": "Générer de la documentation",
+      "fix_bugs": "Corriger des bugs",
+      "security_scan": "Analyse de sécurité",
+      "settings": "Paramètres",
+      "help": "Aide"
+    }
+  },
+  "agents": {
+    "title": "Agents Disponibles",
+    "master": {
+      "name": "Agent Principal",
+      "description": "Coordinatrice principale qui délègue les tâches aux agents spécialisés"
+    },
+    "code_analyzer": {
+      "name": "Analyseur de Code",
+      "description": "Analyse la qualité, les performances et les meilleures pratiques du code"
+    },
+    "documentation_writer": {
+      "name": "Rédacteur de Documentation",
+      "description": "Génère et améliore la documentation du projet"
+    },
+    "bug_fixer": {
+      "name": "Correcteur de Bugs",
+      "description": "Identifie et corrige les bugs et les problèmes"
+    },
+    "architect": {
+      "name": "Architecte",
+      "description": "Conçoit et optimise l'architecture du système"
+    },
+    "security_expert": {
+      "name": "Expert en Sécurité",
+      "description": "Analyse les vulnérabilités de sécurité et recommande des correctifs"
+    }
+  },
+  "chat": {
+    "title": "Chat avec {agent}",
+    "prompt": "> ",
+    "thinking": "{agent} réfléchit...",
+    "response": "[FR] {agent} says:",
+    "error": "Erreur lors de la communication avec {agent}",
+    "disconnected": "[FR] Chat session ended"
+  },
+  "file_operations": {
+    "select_path": "[FR] Select a path to analyze:",
+    "reading": "[FR] Reading files...",
+    "analyzing": "[FR] Analyzing codebase...",
+    "generating": "[FR] Generating output...",
+    "complete": "[FR] Analysis complete!",
+    "file_count": "[FR] Found {count} files",
+    "no_files": "[FR] No files found in the specified path"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "select_language": "Sélectionner la langue",
+    "current_language": "Langue actuelle : {language}",
+    "save": "[FR] Save Settings",
+    "restart_required": "Redémarrez l'application pour appliquer les changements"
+  },
+  "errors": {
+    "api_key_missing": "[FR] NVIDIA API key not found. Please set NVIDIA_API_KEY environment variable.",
+    "network_error": "[FR] Network error occurred. Please check your connection.",
+    "file_not_found": "[FR] File or directory not found: {path}",
+    "permission_denied": "[FR] Permission denied accessing: {path}",
+    "invalid_input": "[FR] Invalid input provided",
+    "timeout": "[FR] Operation timed out"
+  },
+  "progress": {
+    "starting": "Démarrage de {operation}...",
+    "processing": "Traitement...",
+    "completed": "[FR] Completed {operation} in {time}ms",
+    "failed": "[FR] Failed to complete {operation}"
+  },
+  "ui": {
+    "navigation": {
+      "use_arrow_keys": "Utilisez les flèches pour naviguer",
+      "press_enter": "Appuyez sur Entrée pour sélectionner",
+      "press_esc": "Appuyez sur Échap pour revenir",
+      "press_q": "[FR] Press Q to quit"
+    },
+    "loading": {
+      "spinner": "[FR] ⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏",
+      "text": "Veuillez patienter..."
+    },
+    "colors": {
+      "success": "[FR] ✅",
+      "error": "[FR] ❌",
+      "warning": "[FR] ⚠️",
+      "info": "[FR] ℹ️",
+      "question": "[FR] ❓"
+    }
+  },
+  "select_path": "NOT_TRANSLATED",
+  "reading": "NOT_TRANSLATED",
+  "analyzing": "NOT_TRANSLATED",
+  "generating": "NOT_TRANSLATED",
+  "complete": "NOT_TRANSLATED",
+  "file_count": "NOT_TRANSLATED",
+  "no_files": "NOT_TRANSLATED"
+}

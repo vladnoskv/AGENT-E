@@ -1,0 +1,19 @@
+{
+  "navigation": {
+    "use_arrow_keys": "Use ↑↓ arrow keys to navigate",
+    "press_enter": "Press Enter to select",
+    "press_esc": "Press Esc to go back",
+    "press_q": "Press Q to quit"
+  },
+  "loading": {
+    "spinner": "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏",
+    "text": "Loading..."
+  },
+  "colors": {
+    "success": "✅",
+    "error": "❌",
+    "warning": "⚠️",
+    "info": "ℹ️",
+    "question": "❓"
+  }
+}

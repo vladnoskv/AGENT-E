@@ -1,0 +1,8 @@
+{
+  "api_key_missing": "NVIDIA API key not found. Please set NVIDIA_API_KEY environment variable.",
+  "network_error": "Network error occurred. Please check your connection.",
+  "file_not_found": "File or directory not found: {path}",
+  "permission_denied": "Permission denied accessing: {path}",
+  "invalid_input": "Invalid input provided",
+  "timeout": "Operation timed out"
+}

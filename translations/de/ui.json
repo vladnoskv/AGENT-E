@@ -1,0 +1,19 @@
+{
+  "navigation": {
+    "press_q": "NOT_TRANSLATED",
+    "use_arrow_keys": "NOT_TRANSLATED",
+    "press_enter": "NOT_TRANSLATED",
+    "press_esc": "NOT_TRANSLATED"
+  },
+  "loading": {
+    "spinner": "NOT_TRANSLATED",
+    "text": "NOT_TRANSLATED"
+  },
+  "colors": {
+    "success": "NOT_TRANSLATED",
+    "error": "NOT_TRANSLATED",
+    "warning": "NOT_TRANSLATED",
+    "info": "NOT_TRANSLATED",
+    "question": "NOT_TRANSLATED"
+  }
+}
