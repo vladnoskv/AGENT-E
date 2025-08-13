@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import { writeFileSync, readFileSync, unlinkSync } from 'fs';
+import { writeFileSync, readFileSync, unlinkSync, existsSync } from 'fs';
 import { join } from 'path';
-import { AgentOrchestrator } from './agent-orchestrator.js';
+import AgentOrchestrator from '../core/orchestrators/agent-orchestrator.js';
 
 class AgentSystemTester {
   constructor() {
@@ -51,7 +51,7 @@ console.log(greet("World"));`;
         throw new Error('File edit validation failed');
       }
     } finally {
-      if (require('fs').existsSync(testFile)) {
+      if (existsSync(testFile)) {
         unlinkSync(testFile);
       }
     }
@@ -97,8 +97,16 @@ console.log(greet("World"));`;
   }
 }
 
-// Run tests if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Run tests if called directly (robust for Windows/Unix)
+import { fileURLToPath } from 'url';
+import { resolve } from 'path';
+try {
+  const isMain = fileURLToPath(import.meta.url) === resolve(process.argv[1] || '');
+  if (isMain) {
+    const tester = new AgentSystemTester();
+    tester.runAllTests().catch(console.error);
+  }
+} catch {
   const tester = new AgentSystemTester();
   tester.runAllTests().catch(console.error);
 }

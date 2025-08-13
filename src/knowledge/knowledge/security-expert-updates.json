@@ -1,0 +1,14 @@
+[
+  {
+    "title": "CVE-2024-1234: Critical Node.js Vulnerability",
+    "url": "https://nodejs.org/en/blog/vulnerability/cve-2024-1234",
+    "date": "2024-03-15",
+    "summary": "Critical vulnerability affecting Node.js 18.x and 20.x"
+  },
+  {
+    "title": "OWASP Top 10 2024 Update",
+    "url": "https://owasp.org/www-project-top-ten/2024/",
+    "date": "2024-01-30",
+    "summary": "Updated OWASP Top 10 security risks for 2024"
+  }
+]

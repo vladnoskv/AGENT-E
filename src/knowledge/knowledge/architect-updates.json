@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Next.js 14.2 App Router Best Practices",
+    "url": "https://nextjs.org/docs/app/building-your-application",
+    "date": "2024-04-20",
+    "summary": "Latest architectural patterns for Next.js applications"
+  },
+  {
+    "title": "Microservices vs Monolith 2024 Analysis",
+    "url": "https://martinfowler.com/articles/microservices-tradeoffs-2024.html",
+    "date": "2024-02-10",
+    "summary": "Updated analysis on microservices architecture decisions"
+  }
+]

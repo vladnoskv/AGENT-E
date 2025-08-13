@@ -58,13 +58,14 @@ function showHelp() {
 
 function runCommand(command, args = []) {
     const commandMap = {
-        'chat': join(__dirname, '..', 'chat.js'),
-        'response': join(__dirname, '..', 'response.js'),
+        'chat': join(__dirname, '..', 'src', 'commands', 'chat.js'),
+        'response': join(__dirname, '..', 'src', 'commands', 'response.js'),
         'menu': join(__dirname, '..', 'src', 'commands', 'menu.js'),
         'agent': join(__dirname, '..', 'src', 'core', 'orchestrators', 'agent-orchestrator.js'),
         'expert': join(__dirname, '..', 'src', 'agents', 'expert', 'hyper-expert-orchestrator.js'),
-        'test': join(__dirname, '..', 'test-agent-system.js'),
-        'update-knowledge': join(__dirname, '..', 'knowledge-updater.js')
+        'test': join(__dirname, '..', 'src', 'scripts', 'test-agent-system.js'),
+        'update-knowledge': join(__dirname, '..', 'src', 'knowledge', 'knowledge-updater.js'),
+        'mcp': join(__dirname, '..', 'src', 'core', 'mcp', 'mcp-server.js')
     };
 
     if (command === 'help' || !commandMap[command]) {

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { createInterface } from 'readline';
 import chalk from 'chalk';
+import inquirer from 'inquirer';
 import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -41,92 +41,68 @@ const menuOptions = [
   { name: '📚 Knowledge Updates', description: 'Update expert knowledge', action: 'update-knowledge' },
   { name: '🚪 Exit', description: 'Close application', action: 'exit' }
 ];
-
 const runScript = (scriptName) => {
   const scriptMap = {
-    'chat': join(__dirname, '..', '..', 'chat.js'),
-    'response': join(__dirname, '..', '..', 'response.js'),
+    'setup': join(__dirname, 'setup-task.js'),
+    'chat': join(__dirname, 'chat.js'),
+    'response': join(__dirname, 'response.js'),
+    'index': join(__dirname, 'index-codebase.js'),
     'agent': join(__dirname, '..', '..', 'src', 'core', 'orchestrators', 'agent-orchestrator.js'),
-    'test': join(__dirname, '..', '..', 'test-agent-system.js'),
     'expert': join(__dirname, '..', '..', 'src', 'agents', 'expert', 'hyper-expert-orchestrator.js'),
-    'update-knowledge': join(__dirname, '..', '..', 'knowledge-updater.js')
+    'test': join(__dirname, '..', '..', 'src', 'scripts', 'test-agent-system.js'),
+    'update-knowledge': join(__dirname, '..', '..', 'src', 'knowledge', 'knowledge-updater.js')
   };
 
-  if (scriptName === 'exit') {
-    console.log(chalk.green('Goodbye!'));
-    process.exit(0);
+  const scriptPath = scriptMap[scriptName];
+  if (!scriptPath) {
+    console.error(chalk.red(`Unknown script: ${scriptName}`));
+    return;
   }
 
-  const scriptPath = scriptMap[scriptName];
-  
-  console.log(chalk.yellow(`\n🚀 Launching ${menuOptions.find(opt => opt.action === scriptName)?.name || scriptName}...\n`));
-  
-  const child = spawn('node', [scriptPath], {
-    stdio: 'inherit',
-    cwd: process.cwd()
-  });
-
+  console.log(chalk.yellow(`\n🚀 Launching ${scriptName}...\n`));
+  const child = spawn('node', [scriptPath], { stdio: 'inherit', shell: true });
   child.on('close', (code) => {
-    if (code === 0) {
-      console.log(chalk.green('\n✅ Operation completed successfully!'));
-      setTimeout(() => {
-        showMenu();
-      }, 1000);
+    if (code !== 0) {
+      console.error(chalk.red(`\n❌ Script exited with code ${code}`));
     } else {
-      console.log(chalk.red(`\n❌ Process exited with code ${code}`));
-      setTimeout(() => {
-        showMenu();
-      }, 2000);
+      console.log(chalk.green(`\n✅ ${scriptName} completed.`));
     }
-  });
-
-  child.on('error', (error) => {
-    console.error(chalk.red(`Error: ${error.message}`));
-    setTimeout(() => {
-      showMenu();
-    }, 2000);
+    // Return to menu
+    showMenu();
   });
 };
 
-const showMenu = () => {
-  displayHeader();
-  
-  console.log(chalk.cyan.bold('🎯 Select an option:'));
-  console.log();
-  
-  menuOptions.forEach((option, index) => {
-    console.log(chalk.white(`${index + 1}. ${option.name}`));
-    console.log(chalk.gray(`   ${option.description}`));
-    console.log();
-  });
-  
-  const rl = createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  
-  rl.question(chalk.cyan('Enter your choice (1-7): '), (answer) => {
-    const choice = parseInt(answer.trim());
-    
-    if (isNaN(choice) || choice < 1 || choice > menuOptions.length) {
-      console.log(chalk.red('❌ Invalid choice. Please try again.'));
-      setTimeout(() => {
-        rl.close();
-        showMenu();
-      }, 1000);
-      return;
+export const showMenu = async () => {
+  console.log(chalk.cyan.bold('AGENT-E Menu'));
+  console.log(chalk.gray('Select an option:\n'));
+
+  const { choice } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'choice',
+      message: 'What would you like to do?',
+      choices: [
+        { name: 'Setup Task', value: 'setup' },
+        { name: 'Chat Mode', value: 'chat' },
+        { name: 'Response Mode', value: 'response' },
+        { name: 'Agent Orchestrator', value: 'agent' },
+        { name: 'Index Codebase', value: 'index' },
+        { name: 'Test System', value: 'test' },
+        { name: 'Expert Agents', value: 'expert' },
+        { name: 'Knowledge Updates', value: 'update-knowledge' },
+        new inquirer.Separator(),
+        { name: 'Exit', value: 'exit' },
+      ],
+      pageSize: 10
     }
-    
-    const selectedOption = menuOptions[choice - 1];
-    rl.close();
-    
-    if (selectedOption.action === 'exit') {
-      console.log(chalk.green('Goodbye!'));
-      process.exit(0);
-    } else {
-      runScript(selectedOption.action);
-    }
-  });
+  ]);
+
+  if (choice === 'exit') {
+    console.log(chalk.yellow('👋 Goodbye!'));
+    process.exit(0);
+  }
+
+  return runScript(choice);
 };
 
 // Handle Ctrl+C gracefully
@@ -135,8 +111,14 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
-// Main execution
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Main execution (robust main check for Windows/Unix)
+try {
+  const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+  if (isMain) {
+    showMenu();
+  }
+} catch (_) {
+  // Fallback: just run
   showMenu();
 }
 

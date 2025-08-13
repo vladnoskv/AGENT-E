@@ -1,0 +1,14 @@
+[
+  {
+    "title": "ESLint 9.0 Released - New Rules and Breaking Changes",
+    "url": "https://eslint.org/blog/2024/01/eslint-v9.0.0-released/",
+    "date": "2024-01-15",
+    "summary": "Major release with new rules and configuration format"
+  },
+  {
+    "title": "TypeScript 5.4 Performance Improvements",
+    "url": "https://devblogs.microsoft.com/typescript/announcing-typescript-5-4/",
+    "date": "2024-03-05",
+    "summary": "Significant performance improvements in type checking"
+  }
+]
