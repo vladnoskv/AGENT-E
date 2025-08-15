@@ -1,0 +1,50 @@
+services:
+  agentx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agentx
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - NVIDIA_API_KEY=${NVIDIA_API_KEY}
+      - PYTHONUNBUFFERED=1
+    working_dir: /app
+    tty: true
+    stdin_open: true
+    command: ["menu"]
+    # Uncomment the following if you have NVIDIA GPU and want to use GPU acceleration
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # Uncomment and configure these services as needed
+  # redis:
+  #   image: redis:alpine
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   restart: unless-stopped
+
+  # postgres:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     - POSTGRES_USER=agentx
+  #     - POSTGRES_PASSWORD=agentx123
+  #     - POSTGRES_DB=agentx
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   restart: unless-stopped
+
+# volumes:
+#   redis_data:
+#   postgres_data:

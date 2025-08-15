@@ -1,19 +1,23 @@
 # 🤖 AGENT-X - Multi-Model AI Orchestration CLI
 
-A powerful command-line interface for orchestrating multiple specialized AI models from NVIDIA's NIM API, including LLMs, retrieval models, and visual models.
+A powerful Python-based command-line interface for orchestrating multiple specialized AI models from NVIDIA's NIM API, including LLMs, retrieval models, and visual models.
 
 ## 🚀 Features
 
-- **Interactive Menu System**: Easy-to-use terminal interface
+- **Python-Powered**: Pure Python implementation for better maintainability
+- **Rich Terminal UI**: Beautiful console output with rich text formatting
 - **Multi-Model Support**: Seamlessly switch between different AI models
-- **Code Generation**: Specialized support for code generation with StarCoder2
-- **Specialized Retrieval**: Advanced document processing with hybrid search
-- **Visual Models**: Image generation and analysis capabilities
+- **Asynchronous Design**: Built with asyncio for efficient operations
 - **Extensible Architecture**: Easy to add new models and capabilities
-- **Asynchronous Processing**: Efficient handling of multiple requests
 - **Configuration Management**: Environment-based configuration
+- **Interactive Menu**: User-friendly interface for model interaction
+- **Model Registry**: Centralized management of all available models
 
 ## 🛠 Installation
+
+### Prerequisites
+- Python 3.9 or higher
+- NVIDIA API key (get it from [NVIDIA NGC](https://ngc.nvidia.com/))
 
 ### Option 1: Install from source
 
@@ -23,7 +27,13 @@ A powerful command-line interface for orchestrating multiple specialized AI mode
    cd agentx
    ```
 
-2. Install the package in development mode:
+2. Create and activate a virtual environment (recommended):
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install the package in development mode:
    ```bash
    pip install -e .
    ```
@@ -36,10 +46,19 @@ pip install git+https://github.com/yourusername/agentx.git
 
 ### Configuration
 
-Create a `.env` file in the project root with your NVIDIA API key:
-```
-NVIDIA_API_KEY=your-nvidia-api-key-here
-```
+1. Create a `.env` file in the project root with your NVIDIA API key:
+   ```
+   NVIDIA_API_KEY=your-nvidia-api-key-here
+   ```
+
+2. (Optional) Configure additional settings in the `.env` file:
+   ```
+   # Base URL for NVIDIA NIM API (default: https://api.nvidia.com/nim/v1)
+   NIM_API_BASE_URL=https://api.nvidia.com/nim/v1
+   
+   # Log level (default: INFO)
+   LOG_LEVEL=INFO
+   ```
 
 ## 🚦 Quick Start
 
@@ -48,6 +67,32 @@ NVIDIA_API_KEY=your-nvidia-api-key-here
 Launch the interactive menu:
 ```bash
 agentx
+```
+
+This will start the AGENT-X CLI in interactive mode, where you can:
+- Select from available models
+- Chat with language models
+- Generate code
+- Create images from text prompts
+- Generate text embeddings
+- View model information and history
+
+### Command-Line Mode
+
+You can also use AGENT-X directly from the command line:
+
+```bash
+# List all available models
+agentx list-models
+
+# Run a query with the default model
+agentx run "Your question or instruction here"
+
+# Run a query with a specific model
+agentx run --model dbrx-instruct "Your question here"
+
+# Edit a file with a model
+agentx run --model codegemma-7b --file script.py "Improve this code"
 ```
 
 ### Command Line Usage

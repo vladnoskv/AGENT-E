@@ -3,9 +3,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// Map friendly names to valid NVIDIA NIM model identifiers
+// See: https://build.nvidia.com/explore/discover
 const MODEL_MAP = {
-  '20b': 'openai/gpt-oss-20b',
-  '120b': 'openai/gpt-oss-120b'
+  '20b': 'meta/llama-3.1-8b-instruct',
+  '120b': 'meta/llama-3.1-70b-instruct',
+  'llama-8b': 'meta/llama-3.1-8b-instruct',
+  'llama-70b': 'meta/llama-3.1-70b-instruct',
+  'mixtral-8x7b': 'mistralai/mixtral-8x7b-instruct',
+  'mixtral-8x22b': 'mistralai/mixtral-8x22b-instruct',
+  'gemma-9b': 'google/gemma-2-9b-it'
 };
 
 export class NvidiaClient {
@@ -14,7 +21,7 @@ export class NvidiaClient {
     const key = (apiKey || envKey || '').replace(/"/g, '').trim();
     if (!key) throw new Error('NVIDIA_API_KEY or api_key not set in environment');
 
-    this.model = MODEL_MAP[`${model}`.toLowerCase()] || MODEL_MAP['20b'];
+    this.model = MODEL_MAP[`${model}`.toLowerCase()] || 'meta/llama-3.1-8b-instruct';
     this.openai = new OpenAI({ apiKey: key, baseURL });
   }
 
@@ -33,7 +40,11 @@ export class NvidiaClient {
       top_p,
       max_tokens,
     });
-    return completion?.choices?.[0]?.message?.content ?? '';
+    const content = completion?.choices?.[0]?.message?.content;
+    if (typeof content !== 'string' || content.trim().length === 0) {
+      throw new Error(`Empty content from chat completion for model ${this.model}`);
+    }
+    return content;
   }
 
   async respond(input, opts = {}) {

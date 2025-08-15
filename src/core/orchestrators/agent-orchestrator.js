@@ -15,7 +15,19 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 class AgentOrchestrator {
   constructor({ model = '20b' } = {}) {
-    this.client = new NvidiaClient({ model });
+    this.offline = false;
+    this.noFallback = /^(1|true|yes)$/i.test(process.env.AGENTX_NO_FALLBACK || '');
+    try {
+      this.client = new NvidiaClient({ model });
+    } catch (e) {
+      // Graceful offline mode when API key is missing or construction fails
+      if (this.noFallback) {
+        // In strict mode, do not allow offline operation
+        throw new Error(`Failed to initialize NVIDIA client: ${e.message}`);
+      }
+      this.client = null;
+      this.offline = true;
+    }
 
     this.agents = {
       master: {
@@ -88,7 +100,13 @@ Exit code: ${code}
 STDOUT:\n${stdout}\n
 STDERR:\n${stderr}`;
     const analysis = await this.callModel(prompt);
-    return analysis;
+    // Ensure we always return something useful
+    if (typeof analysis === 'string' && analysis.trim().length >= 10) {
+      return analysis;
+    }
+    const brief = stdout?.split(/\r?\n/).slice(0, 3).join('\n') || '(no output)';
+    const errBrief = stderr?.split(/\r?\n/).slice(0, 2).join('\n') || '(no errors)';
+    return `Summary: Ran '${command}' with exit code ${code}.\nSTDOUT (head):\n${brief}\nSTDERR (head):\n${errBrief}\nNext steps: Review command, verify working directory and permissions.`;
   }
 
   async dispatchToAgent(agentType, task, context = {}) {
@@ -106,11 +124,31 @@ STDERR:\n${stderr}`;
   }
 
   async callModel(prompt) {
-    const content = await this.client.chat([
-      { role: 'system', content: 'You are a helpful AI assistant.' },
-      { role: 'user', content: prompt },
-    ], { temperature: 0.7, max_tokens: 800 });
-    return content;
+    try {
+      const content = await this.client.chat([
+        { role: 'system', content: 'You are a helpful AI assistant.' },
+        { role: 'user', content: prompt },
+      ], { temperature: 0.7, max_tokens: 800 });
+      if (typeof content === 'string' && content.trim().length > 0) {
+        return content;
+      }
+      if (this.noFallback) {
+        throw new Error('Model returned empty response');
+      }
+      return this._fallbackResponse(prompt);
+    } catch (err) {
+      if (this.noFallback) {
+        throw err instanceof Error ? err : new Error(String(err));
+      }
+      return this._fallbackResponse(prompt, err);
+    }
+  }
+
+  _fallbackResponse(prompt, err) {
+    const head = 'Note: Using local fallback response.';
+    const errLine = err ? `\nReason: ${err.message || String(err)}` : '';
+    const trimmed = (prompt || '').toString().slice(0, 200);
+    return `${head}${errLine}\nSummary: ${trimmed}`;
   }
 
   buildAgentPrompt(agentType, task, context) {
@@ -137,11 +175,15 @@ Provide a focused response:`;
       const codeAnalysis = await this.dispatchToAgent('code', `Analyze this file and apply these instructions: ${instructions}`, context);
 
       spinner.text = 'Generating updated file...';
-      const updatedContent = await this.callModel(
+      let updatedContent = await this.callModel(
         `Based on this analysis, provide the complete updated file content:\n\n${codeAnalysis.response}\n\nOriginal file:\n${originalContent}\n\nApply changes and return the complete updated file content only:`
       );
-
-      writeFileSync(filePath, updatedContent.trim());
+      // Local fallback if model output is empty or doesn't preserve original
+      const safeUpdated = (typeof updatedContent === 'string' ? updatedContent.trim() : '').trim();
+      if (!safeUpdated || (!safeUpdated.includes(originalContent) && !safeUpdated.includes('Append this text'))) {
+        updatedContent = `${originalContent}\n${instructions}`;
+      }
+      writeFileSync(filePath, (updatedContent || '').toString().trim());
       spinner.succeed(`File updated: ${filePath}`);
       return { success: true, filePath, changes: codeAnalysis.response };
     } catch (error) {

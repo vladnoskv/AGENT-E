@@ -4,6 +4,12 @@ import { writeFileSync, readFileSync, unlinkSync, existsSync } from 'fs';
 import { join } from 'path';
 import { AgentOrchestrator } from '../src/core/orchestrators/agent-orchestrator.js';
 
+// Enforce real NVIDIA API calls for this suite
+process.env.AGENTX_NO_FALLBACK = process.env.AGENTX_NO_FALLBACK || '1';
+if (!(process.env.NVIDIA_API_KEY || process.env.api_key)) {
+  throw new Error('NVIDIA_API_KEY (or api_key) is required for agent system tests.');
+}
+
 class AgentSystemTester {
   constructor() {
     this.testResults = [];
@@ -61,7 +67,9 @@ console.log(greet("World"));`;
     const result = await this.orchestrator.dispatchToAgent('code', 
       'Analyze this simple function: function add(a, b) { return a + b; }'
     );
-    
+    if (/Note: Using local fallback response/i.test(result.response)) {
+      throw new Error('Agent used fallback response (no real API call)');
+    }
     return result.response.includes('add') || result.response.includes('function');
   }
 
@@ -70,7 +78,12 @@ console.log(greet("World"));`;
       "Create a simple calculator function with basic operations",
       { showThinking: false }
     );
-
+    if (!result.success) {
+      throw new Error(result.error || 'orchestration failed');
+    }
+    if (/Note: Using local fallback response/i.test(result.finalResponse || '')) {
+      throw new Error('Final response used fallback (no real API call)');
+    }
     return result.success && result.finalResponse.includes('calculator');
   }
 

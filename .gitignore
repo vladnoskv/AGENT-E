@@ -5,3 +5,4 @@
 .test-temp
 /cache
 /agent-e
+/web/frontend/node_modules

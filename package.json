@@ -1,27 +1,17 @@
 {
-  "name": "AGENT-X",
+  "name": "agent-x",
   "version": "0.1.0",
   "description": "Agent Everything - Multi-agent AI CLI system with NVIDIA GPT-OSS-20B integration",
-  "main": "./bin/AGENT-X.js",
+  "main": "./bin/agentx.js",
   "type": "module",
   "scripts": {
-    "agentx": "python -m cli.main",
-    "start": "node bin/AGENT-X.js",
-    "dev": "nodemon bin/AGENT-X.js",
-    "menu": "node bin/AGENT-X.js menu",
-    "setup": "node src/commands/setup-task.js",
-    "chat": "node src/commands/chat.js",
-    "response": "node src/commands/response.js",
-    "agent": "node src/core/orchestrators/agent-orchestrator.js",
-    "expert": "node src/agents/expert/hyper-expert-orchestrator.js",
-    "update-knowledge": "node src/knowledge/knowledge-updater.js",
-    "index": "node src/commands/index-codebase.js",
-    "ui": "node src/commands/ink-interface.jsx",
-    "test": "node ./tests/test-comprehensive.js",
-    "test-basic": "node ./tests/test-agent-system.js",
-    "test-expert": "node ./tests/test-expert-system.js",
-    "test-all": "npm run test-basic && npm run test-expert && npm run test",
-    "ink": "node bin/AGENT-X.js"
+    "agentx": "python agentx.py",
+    "start": "python agentx.py",
+    "menu": "python agentx.py",
+    "support": "run-support.bat",
+    "agentx-web": "cd web/frontend && npm start",
+    "agentx-api": "python web/backend/main.py",
+    "dev": "concurrently \"npm run agentx-api\" \"npm run agentx-web\""
   },
   "keywords": [
     "nvidia",
@@ -31,10 +21,7 @@
     "api"
   ],
   "bin": {
-    "AGENT-X": "./bin/AGENT-X.js",
-    "AGENT-X-chat": "./src/commands/chat.js",
-    "AGENT-X-response": "./src/commands/response.js",
-    "AGENT-X-setup": "./src/commands/setup-task.js"
+    "agentx": "./bin/agentx.js"
   },
   "author": "",
   "license": "MIT",
@@ -44,11 +31,20 @@
   "dependencies": {
     "chalk": "^5.3.0",
     "dotenv": "^16.4.5",
-    "i18ntk": "^1.9.0",
+    "i18ntk": "^1.8.2",
     "ink": "^4.4.1",
     "inquirer": "^9.2.14",
     "openai": "^4.53.0",
     "ora": "^8.1.0",
     "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/node": "^7.28.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.24.0",
+    "@babel/plugin-transform-runtime": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-react": "^7.24.0",
+    "@babel/register": "^7.24.0"
   }
 }

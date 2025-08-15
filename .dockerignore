@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+agent/venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build and test files
+build/
+dist/
+*.egg-info/
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+tests/
+!tests/integration/
+!tests/unit/
+!tests/e2e/
+!tests/smoke/
+!tests/test-*.js
+!tests/*.test.js
+!tests/*.spec.js
+
+# Documentation
+/docs/
+*.md
+!README.md
+!CHANGELOG.md
+!CONTRIBUTING.md

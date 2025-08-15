@@ -1,0 +1,510 @@
+{
+  "timestamp": "2025-08-15T00:20:43.039Z",
+  "configuration": {
+    "sourceDir": "E:\\CODING\\AGENTX\\locales",
+    "languages": [],
+    "threshold": 50
+  },
+  "analysis": {
+    "files": {
+      "de": {
+        "file": "de/*.json",
+        "size": 433,
+        "sizeKB": "0.42",
+        "lines": 20,
+        "characters": 433,
+        "lastModified": "2025-08-15T00:20:20.117Z",
+        "fileCount": 1
+      },
+      "en": {
+        "file": "en/*.json",
+        "size": 363,
+        "sizeKB": "0.35",
+        "lines": 20,
+        "characters": 363,
+        "lastModified": "2025-08-15T00:20:18.612Z",
+        "fileCount": 1
+      },
+      "es": {
+        "file": "es/*.json",
+        "size": 433,
+        "sizeKB": "0.42",
+        "lines": 20,
+        "characters": 433,
+        "lastModified": "2025-08-15T00:20:20.126Z",
+        "fileCount": 1
+      },
+      "fr": {
+        "file": "fr/*.json",
+        "size": 433,
+        "sizeKB": "0.42",
+        "lines": 20,
+        "characters": 433,
+        "lastModified": "2025-08-15T00:20:20.135Z",
+        "fileCount": 1
+      },
+      "ru": {
+        "file": "ru/*.json",
+        "size": 433,
+        "sizeKB": "0.42",
+        "lines": 20,
+        "characters": 433,
+        "lastModified": "2025-08-15T00:20:20.144Z",
+        "fileCount": 1
+      }
+    },
+    "languages": {
+      "de": {
+        "totalKeys": 14,
+        "totalCharacters": 148,
+        "averageKeyLength": 10.571428571428571,
+        "maxKeyLength": 15,
+        "minKeyLength": 7,
+        "emptyKeys": 0,
+        "longKeys": 0
+      },
+      "en": {
+        "totalKeys": 14,
+        "totalCharacters": 78,
+        "averageKeyLength": 5.571428571428571,
+        "maxKeyLength": 10,
+        "minKeyLength": 2,
+        "emptyKeys": 0,
+        "longKeys": 0
+      },
+      "es": {
+        "totalKeys": 14,
+        "totalCharacters": 148,
+        "averageKeyLength": 10.571428571428571,
+        "maxKeyLength": 15,
+        "minKeyLength": 7,
+        "emptyKeys": 0,
+        "longKeys": 0
+      },
+      "fr": {
+        "totalKeys": 14,
+        "totalCharacters": 148,
+        "averageKeyLength": 10.571428571428571,
+        "maxKeyLength": 15,
+        "minKeyLength": 7,
+        "emptyKeys": 0,
+        "longKeys": 0
+      },
+      "ru": {
+        "totalKeys": 14,
+        "totalCharacters": 148,
+        "averageKeyLength": 10.571428571428571,
+        "maxKeyLength": 15,
+        "minKeyLength": 7,
+        "emptyKeys": 0,
+        "longKeys": 0
+      }
+    },
+    "keys": {
+      "common.common.welcome": {
+        "de": {
+          "length": 12,
+          "characters": 12
+        },
+        "en": {
+          "length": 7,
+          "characters": 7
+        },
+        "es": {
+          "length": 12,
+          "characters": 12
+        },
+        "fr": {
+          "length": 12,
+          "characters": 12
+        },
+        "ru": {
+          "length": 12,
+          "characters": 12
+        }
+      },
+      "common.common.hello": {
+        "de": {
+          "length": 10,
+          "characters": 10
+        },
+        "en": {
+          "length": 5,
+          "characters": 5
+        },
+        "es": {
+          "length": 10,
+          "characters": 10
+        },
+        "fr": {
+          "length": 10,
+          "characters": 10
+        },
+        "ru": {
+          "length": 10,
+          "characters": 10
+        }
+      },
+      "common.common.goodbye": {
+        "de": {
+          "length": 12,
+          "characters": 12
+        },
+        "en": {
+          "length": 7,
+          "characters": 7
+        },
+        "es": {
+          "length": 12,
+          "characters": 12
+        },
+        "fr": {
+          "length": 12,
+          "characters": 12
+        },
+        "ru": {
+          "length": 12,
+          "characters": 12
+        }
+      },
+      "common.common.yes": {
+        "de": {
+          "length": 8,
+          "characters": 8
+        },
+        "en": {
+          "length": 3,
+          "characters": 3
+        },
+        "es": {
+          "length": 8,
+          "characters": 8
+        },
+        "fr": {
+          "length": 8,
+          "characters": 8
+        },
+        "ru": {
+          "length": 8,
+          "characters": 8
+        }
+      },
+      "common.common.no": {
+        "de": {
+          "length": 7,
+          "characters": 7
+        },
+        "en": {
+          "length": 2,
+          "characters": 2
+        },
+        "es": {
+          "length": 7,
+          "characters": 7
+        },
+        "fr": {
+          "length": 7,
+          "characters": 7
+        },
+        "ru": {
+          "length": 7,
+          "characters": 7
+        }
+      },
+      "common.common.save": {
+        "de": {
+          "length": 9,
+          "characters": 9
+        },
+        "en": {
+          "length": 4,
+          "characters": 4
+        },
+        "es": {
+          "length": 9,
+          "characters": 9
+        },
+        "fr": {
+          "length": 9,
+          "characters": 9
+        },
+        "ru": {
+          "length": 9,
+          "characters": 9
+        }
+      },
+      "common.common.cancel": {
+        "de": {
+          "length": 11,
+          "characters": 11
+        },
+        "en": {
+          "length": 6,
+          "characters": 6
+        },
+        "es": {
+          "length": 11,
+          "characters": 11
+        },
+        "fr": {
+          "length": 11,
+          "characters": 11
+        },
+        "ru": {
+          "length": 11,
+          "characters": 11
+        }
+      },
+      "common.common.delete": {
+        "de": {
+          "length": 11,
+          "characters": 11
+        },
+        "en": {
+          "length": 6,
+          "characters": 6
+        },
+        "es": {
+          "length": 11,
+          "characters": 11
+        },
+        "fr": {
+          "length": 11,
+          "characters": 11
+        },
+        "ru": {
+          "length": 11,
+          "characters": 11
+        }
+      },
+      "common.common.edit": {
+        "de": {
+          "length": 9,
+          "characters": 9
+        },
+        "en": {
+          "length": 4,
+          "characters": 4
+        },
+        "es": {
+          "length": 9,
+          "characters": 9
+        },
+        "fr": {
+          "length": 9,
+          "characters": 9
+        },
+        "ru": {
+          "length": 9,
+          "characters": 9
+        }
+      },
+      "common.common.loading": {
+        "de": {
+          "length": 15,
+          "characters": 15
+        },
+        "en": {
+          "length": 10,
+          "characters": 10
+        },
+        "es": {
+          "length": 15,
+          "characters": 15
+        },
+        "fr": {
+          "length": 15,
+          "characters": 15
+        },
+        "ru": {
+          "length": 15,
+          "characters": 15
+        }
+      },
+      "common.navigation.home": {
+        "de": {
+          "length": 9,
+          "characters": 9
+        },
+        "en": {
+          "length": 4,
+          "characters": 4
+        },
+        "es": {
+          "length": 9,
+          "characters": 9
+        },
+        "fr": {
+          "length": 9,
+          "characters": 9
+        },
+        "ru": {
+          "length": 9,
+          "characters": 9
+        }
+      },
+      "common.navigation.about": {
+        "de": {
+          "length": 10,
+          "characters": 10
+        },
+        "en": {
+          "length": 5,
+          "characters": 5
+        },
+        "es": {
+          "length": 10,
+          "characters": 10
+        },
+        "fr": {
+          "length": 10,
+          "characters": 10
+        },
+        "ru": {
+          "length": 10,
+          "characters": 10
+        }
+      },
+      "common.navigation.contact": {
+        "de": {
+          "length": 12,
+          "characters": 12
+        },
+        "en": {
+          "length": 7,
+          "characters": 7
+        },
+        "es": {
+          "length": 12,
+          "characters": 12
+        },
+        "fr": {
+          "length": 12,
+          "characters": 12
+        },
+        "ru": {
+          "length": 12,
+          "characters": 12
+        }
+      },
+      "common.navigation.settings": {
+        "de": {
+          "length": 13,
+          "characters": 13
+        },
+        "en": {
+          "length": 8,
+          "characters": 8
+        },
+        "es": {
+          "length": 13,
+          "characters": 13
+        },
+        "fr": {
+          "length": 13,
+          "characters": 13
+        },
+        "ru": {
+          "length": 13,
+          "characters": 13
+        }
+      }
+    },
+    "summary": {
+      "baseLanguage": "de",
+      "totalLanguages": 5,
+      "sizeVariations": {
+        "en": {
+          "characterDifference": -70,
+          "percentageDifference": "-47.30",
+          "isProblematic": false
+        },
+        "es": {
+          "characterDifference": 0,
+          "percentageDifference": "0.00",
+          "isProblematic": false
+        },
+        "fr": {
+          "characterDifference": 0,
+          "percentageDifference": "0.00",
+          "isProblematic": false
+        },
+        "ru": {
+          "characterDifference": 0,
+          "percentageDifference": "0.00",
+          "isProblematic": false
+        }
+      },
+      "problematicKeys": [
+        {
+          "key": "common.common.yes",
+          "variations": [
+            {
+              "language": "en",
+              "characterDifference": -5,
+              "percentageDifference": "-62.50",
+              "baseLength": 8,
+              "currentLength": 3
+            }
+          ]
+        },
+        {
+          "key": "common.common.no",
+          "variations": [
+            {
+              "language": "en",
+              "characterDifference": -5,
+              "percentageDifference": "-71.43",
+              "baseLength": 7,
+              "currentLength": 2
+            }
+          ]
+        },
+        {
+          "key": "common.common.save",
+          "variations": [
+            {
+              "language": "en",
+              "characterDifference": -5,
+              "percentageDifference": "-55.56",
+              "baseLength": 9,
+              "currentLength": 4
+            }
+          ]
+        },
+        {
+          "key": "common.common.edit",
+          "variations": [
+            {
+              "language": "en",
+              "characterDifference": -5,
+              "percentageDifference": "-55.56",
+              "baseLength": 9,
+              "currentLength": 4
+            }
+          ]
+        },
+        {
+          "key": "common.navigation.home",
+          "variations": [
+            {
+              "language": "en",
+              "characterDifference": -5,
+              "percentageDifference": "-55.56",
+              "baseLength": 9,
+              "currentLength": 4
+            }
+          ]
+        }
+      ],
+      "recommendations": [
+        "Problematic keys: common.common.yes, common.common.no, common.common.save, common.common.edit, common.navigation.home"
+      ]
+    }
+  },
+  "metadata": {
+    "totalFiles": 5,
+    "totalLanguages": 5,
+    "totalKeys": 14
+  }
+}

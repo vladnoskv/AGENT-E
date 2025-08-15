@@ -1,6 +1,0 @@
-{
-  "starting": "Starting {operation}...",
-  "processing": "Processing... {current}/{total}",
-  "completed": "Completed {operation} in {time}ms",
-  "failed": "Failed to complete {operation}"
-}

@@ -1,8 +1,0 @@
-{
-  "title": "Multi-Agent AI CLI Tool",
-  "version": "v0.0.1",
-  "welcome": "Welcome to AGENTX - Your Multi-Agent AI Assistant",
-  "loading": "Initializing AGENTX...",
-  "error": "An error occurred",
-  "success": "Operation completed successfully"
-}

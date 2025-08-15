@@ -10,6 +10,7 @@ import { dirname, join } from 'path';
 import { readTaskMemory } from '../utils/task-memory.js';
 import { getCurrentTaskId } from '../utils/current-task.js';
 import { readTaskManifest } from '../utils/task-manifest.js';
+import { loadSettings, setSetting } from '../config/settings.js';
 
 dotenv.config();
 
@@ -42,9 +43,17 @@ async function chatMode({ autostart = false } = {}) {
   console.log(chalk.blue.bold('🤖 NVIDIA GPT-OSS-20B Chat Mode'));
   console.log(chalk.gray('Type "exit" to quit\n'));
   const currentTaskId = getCurrentTaskId();
+  let settings = loadSettings();
+  let messages = [];
+  let sysSummaryMsg = null;
   if (currentTaskId) {
     const mem = readTaskMemory(currentTaskId, {});
     console.log(chalk.gray(`Using task: ${currentTaskId} (${mem.fileCount ?? 'n/a'} files indexed)`));
+    const summary = `You are assisting on task ${currentTaskId}. Indexed files: ${mem.fileCount ?? 'n/a'}. Index: ${mem.indexPath ?? 'n/a'}. Prefer actionable, stepwise guidance. If user asks to search or edit code, suggest using /index, and forthcoming /grep, /open, /edit, /run-tests.`;
+    sysSummaryMsg = { role: 'system', content: summary };
+    if (settings.continuousChat) {
+      messages.push(sysSummaryMsg);
+    }
   }
   
   const rl = createInterface({
@@ -66,15 +75,24 @@ async function chatMode({ autostart = false } = {}) {
         `Constraints: ${Array.isArray(manifest.constraints) ? manifest.constraints.join('; ') : 'N/A'}\n` +
         `Plan the next concrete steps and begin executing. Ask clarifying questions only if strictly necessary. Prefer using tools (index, grep, open, edit, run-tests) to make progress.`;
       console.log(chalk.gray('\n[Auto] Kickoff based on task manifest...'));
+      const kickoffMessages = [
+        { role: 'system', content: 'You are an autonomous coding assistant focused on actionable steps.' },
+        ...(settings.continuousChat && sysSummaryMsg ? [sysSummaryMsg] : []),
+        { role: 'user', content: kickoff }
+      ];
       const completion = await openai.chat.completions.create({
         model: "openai/gpt-oss-20b",
-        messages: [{ role: 'system', content: 'You are an autonomous coding assistant focused on actionable steps.' }, { role: 'user', content: kickoff }],
+        messages: kickoffMessages,
         max_tokens: 1024,
         temperature: 0.5,
         top_p: 0.9,
       });
       const response = completion.choices[0].message.content;
       console.log(chalk.green('AI: ') + response + '\n');
+      if (settings.continuousChat) {
+        messages.push({ role: 'user', content: kickoff });
+        messages.push({ role: 'assistant', content: response });
+      }
     } catch (e) {
       console.log(chalk.yellow('Autostart failed; continuing to interactive chat.')); 
     }
@@ -114,17 +132,39 @@ async function chatMode({ autostart = false } = {}) {
       return;
     }
 
+    // Toggle continuous/one-off mode
+    if (message === '/mode') {
+      const next = setSetting('continuousChat', !settings.continuousChat);
+      settings = next;
+      if (!settings.continuousChat) {
+        messages = [];
+      } else if (settings.continuousChat && sysSummaryMsg) {
+        messages = [sysSummaryMsg];
+      }
+      console.log(chalk.cyan(`⚙️  Mode switched: ${settings.continuousChat ? 'Continuous (history ON)' : 'One-off (no history)'}`));
+      rl.prompt();
+      return;
+    }
+
+    // Clear chat history
+    if (message === '/clear') {
+      messages = settings.continuousChat && sysSummaryMsg ? [sysSummaryMsg] : [];
+      console.log(chalk.cyan('🧹 History cleared.'));
+      rl.prompt();
+      return;
+    }
+
     try {
       console.log(chalk.blue('🤖 Thinking...'));
-      const sys = [];
-      if (currentTaskId) {
-        const mem = readTaskMemory(currentTaskId, {});
-        const summary = `You are assisting on task ${currentTaskId}. Indexed files: ${mem.fileCount ?? 'n/a'}. Index: ${mem.indexPath ?? 'n/a'}. Prefer actionable, stepwise guidance. If user asks to search or edit code, suggest using /index, and forthcoming /grep, /open, /edit, /run-tests.`;
-        sys.push({ role: 'system', content: summary });
-      }
+      const payloadMessages = settings.continuousChat
+        ? [...messages, { role: 'user', content: message }]
+        : [
+            ...(sysSummaryMsg ? [sysSummaryMsg] : []),
+            { role: 'user', content: message }
+          ];
       const completion = await openai.chat.completions.create({
         model: "openai/gpt-oss-20b",
-        messages: [...sys, { role: 'user', content: message }],
+        messages: payloadMessages,
         max_tokens: 1024,
         temperature: 0.7,
         top_p: 0.9,
@@ -132,6 +172,10 @@ async function chatMode({ autostart = false } = {}) {
 
       const response = completion.choices[0].message.content;
       console.log(chalk.green('AI: ') + response + '\n');
+      if (settings.continuousChat) {
+        messages.push({ role: 'user', content: message });
+        messages.push({ role: 'assistant', content: response });
+      }
       
     } catch (error) {
       console.error(chalk.red('❌ Error:'), error.message);
