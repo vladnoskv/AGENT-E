@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGENT-X Web Interface</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .chat-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      height: 70vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    
+    .message {
+      margin-bottom: 15px;
+      max-width: 80%;
+    }
+    
+    .message.user {
+      margin-left: auto;
+      text-align: right;
+    }
+    
+    .message.assistant {
+      margin-right: auto;
+      text-align: left;
+    }
+    
+    .message-content {
+      display: inline-block;
+      padding: 10px 15px;
+      border-radius: 18px;
+      background: #e9ecef;
+      color: #212529;
+      word-wrap: break-word;
+      max-width: 100%;
+    }
+    
+    .user .message-content {
+      background: #007bff;
+      color: white;
+    }
+    
+    .message-sender {
+      font-size: 0.8em;
+      color: #6c757d;
+      margin-bottom: 4px;
+    }
+    
+    .input-area {
+      display: flex;
+      padding: 15px;
+      background: #f8f9fa;
+      border-top: 1px solid #dee2e6;
+    }
+    
+    #messageInput {
+      flex: 1;
+      padding: 10px 15px;
+      border: 1px solid #ced4da;
+      border-radius: 20px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    
+    #messageInput:focus {
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+    
+    #sendButton {
+      margin-left: 10px;
+      padding: 10px 20px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+    
+    #sendButton:hover {
+      background: #218838;
+    }
+    
+    #sendButton:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+    }
+    
+    .status {
+      text-align: center;
+      padding: 10px;
+      color: #6c757d;
+      font-size: 0.9em;
+    }
+    
+    .typing-indicator {
+      display: inline-block;
+      padding: 10px 15px;
+      background: #e9ecef;
+      border-radius: 18px;
+      color: #6c757d;
+      font-style: italic;
+    }
+    
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      
+      .chat-container {
+        height: 85vh;
+      }
+      
+      .message {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>AGENT-X</h1>
+  
+  <div class="chat-container">
+    <div class="messages" id="messages">
+      <div class="status" id="status">Connecting to server...</div>
+    </div>
+    
+    <div class="input-area">
+      <input 
+        type="text" 
+        id="messageInput" 
+        placeholder="Type your message..." 
+        disabled
+      >
+      <button id="sendButton" disabled>Send</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import webSocketClient from './ws-client.js';
+    
+    // DOM Elements
+    const messagesEl = document.getElementById('messages');
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+    const statusEl = document.getElementById('status');
+    
+    // State
+    let conversationId = null;
+    let isTyping = false;
+    
+    // Initialize WebSocket client
+    async function init() {
+      try {
+        await webSocketClient.connect();
+        updateStatus('Connected to server');
+        
+        // Enable input and button
+        messageInput.disabled = false;
+        sendButton.disabled = false;
+        messageInput.focus();
+        
+        // Set up event listeners
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+          }
+        });
+        
+        // Set up message handlers
+        webSocketClient.on('connection_established', handleConnectionEstablished);
+        webSocketClient.on('chat_response', handleChatResponse);
+        webSocketClient.on('error', handleError);
+        
+      } catch (error) {
+        console.error('Failed to initialize WebSocket client:', error);
+        updateStatus(`Connection error: ${error.message}`, 'error');
+      }
+    }
+    
+    // Handle connection established
+    function handleConnectionEstablished(data) {
+      console.log('Connection established:', data);
+      updateStatus('Connected to AGENT-X');
+      
+      // If we have a conversation ID from a previous session, you could restore it here
+      // conversationId = localStorage.getItem('conversationId');
+    }
+    
+    // Handle chat response
+    function handleChatResponse(data) {
+      console.log('Chat response:', data);
+      
+      // Update conversation ID if this is a new conversation
+      if (data.conversationId) {
+        conversationId = data.conversationId;
+        // localStorage.setItem('conversationId', conversationId);
+      }
+      
+      // Remove typing indicator if it exists
+      const typingIndicator = document.getElementById('typing-indicator');
+      if (typingIndicator) {
+        typingIndicator.remove();
+      }
+      
+      // Add message to chat
+      addMessage('assistant', data.message || 'No response from server');
+      
+      // Re-enable input
+      isTyping = false;
+      messageInput.disabled = false;
+      sendButton.disabled = false;
+      messageInput.focus();
+    }
+    
+    // Handle errors
+    function handleError(error) {
+      console.error('WebSocket error:', error);
+      updateStatus(`Error: ${error.message || 'Unknown error occurred'}`, 'error');
+      
+      // Re-enable input on error
+      isTyping = false;
+      messageInput.disabled = false;
+      sendButton.disabled = false;
+    }
+    
+    // Send a message
+    function sendMessage() {
+      const message = messageInput.value.trim();
+      if (!message) return;
+      
+      // Add user message to chat
+      addMessage('user', message);
+      
+      // Clear input
+      messageInput.value = '';
+      
+      // Disable input while waiting for response
+      isTyping = true;
+      messageInput.disabled = true;
+      sendButton.disabled = true;
+      
+      // Show typing indicator
+      const typingIndicator = document.createElement('div');
+      typingIndicator.id = 'typing-indicator';
+      typingIndicator.className = 'message assistant';
+      typingIndicator.innerHTML = `
+        <div class="message-sender">AGENT-X is typing...</div>
+        <div class="typing-indicator">
+          <span>.</span><span>.</span><span>.</span>
+        </div>
+      `;
+      messagesEl.appendChild(typingIndicator);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      
+      // Send message to server
+      webSocketClient.sendMessage('chat', {
+        message,
+        conversationId
+      });
+    }
+    
+    // Add a message to the chat
+    function addMessage(sender, text) {
+      const messageEl = document.createElement('div');
+      messageEl.className = `message ${sender}`;
+      
+      const senderName = sender === 'user' ? 'You' : 'AGENT-X';
+      
+      messageEl.innerHTML = `
+        <div class="message-sender">${senderName}</div>
+        <div class="message-content">${formatMessage(text)}</div>
+      `;
+      
+      messagesEl.appendChild(messageEl);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+    
+    // Format message text (convert newlines to <br>)
+    function formatMessage(text) {
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\n/g, '<br>');
+    }
+    
+    // Update status message
+    function updateStatus(message, type = 'info') {
+      statusEl.textContent = message;
+      statusEl.className = 'status';
+      
+      if (type === 'error') {
+        statusEl.style.color = '#dc3545';
+      } else if (type === 'success') {
+        statusEl.style.color = '#28a745';
+      } else {
+        statusEl.style.color = '#6c757d';
+      }
+      
+      // Auto-hide non-error status messages after 3 seconds
+      if (type !== 'error') {
+        clearTimeout(updateStatus.timeout);
+        updateStatus.timeout = setTimeout(() => {
+          statusEl.textContent = '';
+        }, 3000);
+      }
+    }
+    
+    // Initialize the app
+    init();
+    
+    // Focus the input when the page loads
+    window.addEventListener('load', () => {
+      if (messageInput) messageInput.focus();
+    });
+  </script>
+</body>
+</html>

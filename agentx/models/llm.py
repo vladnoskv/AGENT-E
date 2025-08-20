@@ -370,7 +370,7 @@ class MixtralInstruct(BaseLLM):
             raise
 
 
-class CodeGemma7B(BaseModel):
+class CodeGemma7B(BaseLLM):
     """Google's CodeGemma 7B model for code generation."""
     
     def get_default_base_url(self) -> str:
@@ -379,16 +379,16 @@ class CodeGemma7B(BaseModel):
     
     async def generate(
         self,
-        prompt: str,
-        max_tokens: int = 2048,
-        temperature: float = 0.2,
-        top_p: float = 0.9,
+        prompt: Union[str, List[Dict[str, str]]],
+        max_tokens: Optional[int] = None,
+        temperature: Optional[float] = None,
+        top_p: Optional[float] = None,
         **kwargs
     ) -> ModelResponse:
         """Generate code using CodeGemma 7B.
         
         Args:
-            prompt: The code prompt or instruction
+            prompt: The code prompt or list of messages
             max_tokens: Maximum number of tokens to generate
             temperature: Sampling temperature (0.0 to 1.0)
             top_p: Nucleus sampling parameter
@@ -398,16 +398,29 @@ class CodeGemma7B(BaseModel):
             ModelResponse containing the generated code and metadata
         """
         # Prepare the request payload
-        payload = {
-            "prompt": prompt,
-            "temperature": temperature,
-            "top_p": top_p,
-            "max_tokens": max_tokens,
-            "stream": False
-        }
+        messages = self._prepare_messages(prompt, kwargs.pop('system_prompt', None))
         
-        # Add any additional parameters
-        payload.update(kwargs)
+        # Convert messages to a single prompt string for CodeGemma
+        prompt_text = ""
+        for msg in messages:
+            role = msg['role']
+            content = msg['content']
+            if role == 'system':
+                prompt_text += f"System: {content}\n\n"
+            elif role == 'user':
+                prompt_text += f"User: {content}\n\n"
+            elif role == 'assistant':
+                prompt_text += f"Assistant: {content}\n\n"
+        prompt_text = prompt_text.strip()
+        
+        payload = {
+            "prompt": prompt_text,
+            "temperature": temperature if temperature is not None else self.generation_config.temperature,
+            "top_p": top_p if top_p is not None else self.generation_config.top_p,
+            "max_tokens": max_tokens if max_tokens is not None else self.generation_config.max_tokens,
+            "stream": False,
+            **kwargs
+        }
         
         # Make the API request
         session = await self.ensure_session()
@@ -436,18 +449,127 @@ class CodeGemma7B(BaseModel):
                 result = await response.json()
                 
                 # Extract the generated code from the response
-                # Note: The actual structure might need adjustment based on the API response
-                content = result.get('text', '')
+                # The actual structure might need adjustment based on the API response
+                if 'choices' in result and len(result['choices']) > 0:
+                    content = result['choices'][0].get('message', {}).get('content', '')
+                else:
+                    content = result.get('text', '')
                 
                 return ModelResponse(
                     content=content,
                     model=self.model_name,
                     metadata={
                         "model": self.model_name,
-                        "tokens_used": result.get('usage', {}).get('total_tokens', 0)
+                        "tokens_used": result.get('usage', {}).get('total_tokens', 0),
+                        "finish_reason": result.get('choices', [{}])[0].get('finish_reason', 'stop')
                     }
                 )
                 
         except Exception as e:
-            logger.error(f"Error generating with CodeGemma 7B: {e}")
+            logger.error(f"Error generating with CodeGemma 7B: {e}", exc_info=True)
+            raise
+            
+    async def stream(
+        self,
+        prompt: Union[str, List[Dict[str, str]]],
+        **kwargs
+    ) -> AsyncGenerator[ModelResponse, None]:
+        """Stream responses from the CodeGemma 7B model.
+        
+        Args:
+            prompt: The input prompt or list of messages
+            **kwargs: Generation parameters
+            
+        Yields:
+            ModelResponse chunks as they become available
+        """
+        # Prepare the request payload
+        messages = self._prepare_messages(prompt, kwargs.pop('system_prompt', None))
+        
+        # Convert messages to a single prompt string for CodeGemma
+        prompt_text = ""
+        for msg in messages:
+            role = msg['role']
+            content = msg['content']
+            if role == 'system':
+                prompt_text += f"System: {content}\n\n"
+            elif role == 'user':
+                prompt_text += f"User: {content}\n\n"
+            elif role == 'assistant':
+                prompt_text += f"Assistant: {content}\n\n"
+        prompt_text = prompt_text.strip()
+        
+        payload = {
+            "prompt": prompt_text,
+            "temperature": kwargs.get('temperature', self.generation_config.temperature),
+            "top_p": kwargs.get('top_p', self.generation_config.top_p),
+            "max_tokens": kwargs.get('max_tokens', self.generation_config.max_tokens),
+            "stream": True,
+            **kwargs
+        }
+        
+        # Make the API request
+        session = await self.ensure_session()
+        
+        try:
+            # First, get the function ID for CodeGemma 7B
+            list_url = f"{self.base_url}?name=codegemma-7b"
+            async with session.get(list_url) as response:
+                if response.status != 200:
+                    error_text = await response.text()
+                    raise Exception(f"Failed to get CodeGemma function ID: {error_text}")
+                
+                functions = await response.json()
+                if not functions.get('functions'):
+                    raise Exception("No CodeGemma function found")
+                
+                function_id = functions['functions'][0]['id']
+            
+            # Now call the function with streaming
+            call_url = f"{self.base_url}{function_id}"
+            async with session.post(call_url, json=payload) as response:
+                if response.status != 200:
+                    error_text = await response.text()
+                    raise Exception(f"API request failed: {error_text}")
+                
+                buffer = ""
+                async for line in response.content:
+                    if line.startswith(b'data: '):
+                        chunk = line[6:].strip()
+                        if chunk == b'[DONE]':
+                            break
+                            
+                        try:
+                            data = json.loads(chunk)
+                            if 'choices' in data and len(data['choices']) > 0:
+                                delta = data['choices'][0].get('delta', {})
+                                content = delta.get('content', '')
+                                
+                                if content:
+                                    buffer += content
+                                    yield ModelResponse(
+                                        content=content,
+                                        model=self.model_name,
+                                        metadata={
+                                            "model": self.model_name,
+                                            "chunk": True,
+                                            "finish_reason": None
+                                        }
+                                    )
+                        except json.JSONDecodeError:
+                            continue
+                
+                # Final response with complete content
+                yield ModelResponse(
+                    content=buffer,
+                    model=self.model_name,
+                    metadata={
+                        "model": self.model_name,
+                        "chunk": False,
+                        "finish_reason": "stop"
+                    }
+                )
+                
+        except Exception as e:
+            logger.error(f"Error streaming with CodeGemma 7B: {e}", exc_info=True)
             raise

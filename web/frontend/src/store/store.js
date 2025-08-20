@@ -6,7 +6,8 @@ import storage from 'redux-persist/lib/storage';
 // Slices
 import uiReducer from './slices/uiSlice';
 import chatReducer from './slices/chatSlice';
-import agentReducer from './slices/agentSlice';
+// agentReducer is not used, using agentsReducer instead
+import agentsReducer from './slices/agentsSlice';
 import modelReducer from './slices/modelSlice';
 
 // Persist configuration
@@ -19,7 +20,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   ui: uiReducer,
   chat: chatReducer,
-  agents: agentReducer,
+  agents: agentsReducer, // Updated to use the new agents slice
   models: modelReducer,
 });
 

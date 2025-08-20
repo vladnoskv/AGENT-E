@@ -18,9 +18,16 @@ import asyncio
 import logging
 from pathlib import Path
 import sys
+from dotenv import load_dotenv
 
-# Add project root to path
-sys.path.append(str(Path(__file__).parent.parent))
+# Add project root to sys.path and load environment
+backend_dir = Path(__file__).resolve().parent
+project_root = backend_dir.parent.parent  # .../web/backend -> project root
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+# Load environment variables from .env at project root
+load_dotenv(dotenv_path=project_root / ".env", override=False)
 
 # Import AGENT-X components
 from agentx.models.registry import ModelRegistry
@@ -66,6 +73,12 @@ class WebSocketMessage(BaseModel):
 async def startup_event():
     global model_registry, super_agent
     try:
+        # Log key presence (not the value) to aid debugging
+        if os.getenv("NVIDIA_API_KEY"):
+            logger.info("NVIDIA_API_KEY detected from environment")
+        else:
+            logger.warning("NVIDIA_API_KEY not set. Set it in your .env at project root or environment.")
+
         # Initialize model registry
         model_registry = ModelRegistry()
 
@@ -195,17 +208,39 @@ async def handle_execute_message(websocket: WebSocket, message: Dict):
         })
 
 # Serve static files (frontend)
-app.mount("/static", StaticFiles(directory="../frontend/build/static"), name="static")
+# Resolve build path relative to project root to be robust regardless of CWD
+frontend_build_path = (project_root / "web" / "frontend" / "build").resolve()
+static_path = frontend_build_path / "static"
+
+# Only mount static files if the directory exists
+if static_path.exists() and static_path.is_dir():
+    app.mount("/static", StaticFiles(directory=str(static_path)), name="static")
+    logger.info(f"Serving static files from: {static_path}")
+else:
+    logger.warning(f"Static files directory not found at: {static_path}")
 
 @app.get("/{full_path:path}")
 async def serve_react_app(full_path: str):
     """Serve the React frontend."""
-    static_path = Path("../frontend/build")
-    file_path = static_path / full_path
-
+    # Default to index.html for root path
+    if not full_path or full_path == "/":
+        full_path = "index.html"
+    
+    file_path = frontend_build_path / full_path
+    
     # If the path exists and is a file, serve it
     if file_path.exists() and file_path.is_file():
         return FileResponse(file_path)
-
-    # Otherwise serve index.html (for React Router)
-    return FileResponse(static_path / "index.html")
+    
+    # For API routes, return 404
+    if full_path.startswith("api/"):
+        raise HTTPException(status_code=404, detail="API endpoint not found")
+    
+    # For all other routes, try to serve index.html (for React Router)
+    # but only if it exists
+    index_path = frontend_build_path / "index.html"
+    if index_path.exists():
+        return FileResponse(index_path)
+    
+    # If we get here, the file doesn't exist and we don't have an index.html
+    raise HTTPException(status_code=404, detail="Frontend files not found. Please build the frontend first.")

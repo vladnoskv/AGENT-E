@@ -5,12 +5,18 @@ This module provides a rich, interactive command-line interface for users
 to interact with the AGENT-X system and its models.
 """
 
-from typing import Dict, List, Optional, Any, Callable, Coroutine
+from typing import Dict, List, Optional, Any, Callable, Coroutine, TYPE_CHECKING
 import asyncio
 from datetime import datetime
 from pathlib import Path
 import json
 import logging
+import webbrowser
+import subprocess
+import sys
+import platform
+import os
+from enum import Enum, auto
 
 from rich.console import Console, Group
 from rich.layout import Layout
@@ -18,16 +24,28 @@ from rich.panel import Panel
 from rich.prompt import Prompt, Confirm, IntPrompt
 from rich.table import Table
 from rich.text import Text
-from rich.box import ROUNDED, HEAVY
+from rich.box import ROUNDED, HEAVY, DOUBLE
 from rich.align import Align, VerticalCenter
+from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.live import Live
 
 from ..models import (
     ModelType, ModelRegistry, get_model, list_models, ModelInfo
 )
 from ..models.base import ModelResponse
+from .settings import settings, set_setting, get_setting
+
+if TYPE_CHECKING:
+    from .settings import SettingsManager
 
 logger = logging.getLogger(__name__)
 console = Console()
+
+class WebUIStatus(Enum):
+    STOPPED = auto()
+    STARTING = auto()
+    RUNNING = auto()
+    ERROR = auto()
 
 class MenuItem:
     """Represents a single menu item in the interactive menu."""
@@ -61,10 +79,17 @@ class MenuSystem:
     
     async def run(self) -> None:
         """Run the main menu loop."""
+        # Show welcome banner on first run
+        if self.show_banner:
+            await self.display_banner()
+            
         while self.running:
             try:
-                # Display the menu
-                self.console.clear()
+                # Clear console if enabled
+                if self.auto_clear:
+                    self.console.clear()
+                else:
+                    self.console.print("")
                 
                 # Show header
                 header_text = self._get_header_text()
@@ -153,8 +178,15 @@ class MenuSystem:
         self.registry = ModelRegistry()
         self.current_model: Optional[Any] = None
         self.current_model_info: Optional[ModelInfo] = None
-        self.history: List[Dict[str, Any]] = []
+        self.history: List[Dict[str, Any]] = None
         self.running = True
+        self.web_ui_process = None
+        self.web_ui_status = WebUIStatus.STOPPED
+        
+        # Load settings
+        self.settings = settings
+        self.auto_clear = self.settings.get('ui.auto_clear_console', False)
+        self.show_banner = self.settings.get('ui.show_banner', True)
         
         # Fixed layout dimensions
         self.min_width = 80
@@ -162,11 +194,24 @@ class MenuSystem:
         self.fixed_width = 100  # Preferred fixed width
         self.min_height = 30
         
-        # Initialize console with minimal settings
+        # Initialize console with settings
         self.console = Console(soft_wrap=True, highlight=False)
+        
+        # Initialize history
+        self._init_history()
         
         # Initialize menu items
         self.menu_items: List[MenuItem] = [
+            MenuItem(
+                "Open Web UI",
+                "Launch the AGENT-X web interface",
+                self._launch_web_ui
+            ),
+            MenuItem(
+                "Settings",
+                "Configure application settings",
+                self._show_settings_menu
+            ),
             MenuItem(
                 "Select Model",
                 "Choose a model to interact with",
@@ -1097,6 +1142,219 @@ class MenuSystem:
         # Redraw the menu
         await self.run()
     
+    def _init_history(self) -> None:
+        """Initialize the command history."""
+        history_file = Path.home() / ".agentx" / "history.json"
+        try:
+            if history_file.exists():
+                with open(history_file, 'r', encoding='utf-8') as f:
+                    self.history = json.load(f)
+            else:
+                self.history = []
+        except Exception as e:
+            logger.error(f"Error loading history: {e}")
+            self.history = []
+    
+    def _save_history(self) -> None:
+        """Save the command history to disk."""
+        history_file = Path.home() / ".agentx" / "history.json"
+        try:
+            history_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(history_file, 'w', encoding='utf-8') as f:
+                json.dump(self.history[-100:], f, indent=2)  # Keep last 100 items
+        except Exception as e:
+            logger.error(f"Error saving history: {e}")
+    
+    async def _launch_web_ui(self) -> None:
+        """Launch the AGENT-X web interface using the launcher script."""
+        if self.web_ui_status == WebUIStatus.RUNNING:
+            if Confirm.ask("Web UI is already running. Open in browser?"):
+                self._open_web_ui_in_browser()
+            return
+            
+        self.web_ui_status = WebUIStatus.STARTING
+        
+        try:
+            project_root = Path(__file__).parent.parent.parent
+            launcher_script = project_root / "web" / "launch.py"
+            
+            if not launcher_script.exists():
+                self.console.print("\n[red]❌ Web UI launcher script not found.[/]")
+                self.console.print(f"Expected at: {launcher_script}")
+                self.web_ui_status = WebUIStatus.ERROR
+                await asyncio.sleep(2)
+                return
+                
+            with Progress(
+                SpinnerColumn(),
+                TextColumn("[progress.description]{task.description}"),
+                transient=True,
+                console=self.console
+            ) as progress:
+                task = progress.add_task("[cyan]Starting Web UI...", total=100)
+                
+                try:
+                    # Launch the web UI in a new console window
+                    if platform.system() == "Windows":
+                        import ctypes
+                        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 6)  # Minimize console
+                        
+                        self.web_ui_process = subprocess.Popen(
+                            [sys.executable, str(launcher_script)],
+                            creationflags=subprocess.CREATE_NEW_CONSOLE,
+                            cwd=str(project_root)
+                        )
+                    else:
+                        # For non-Windows systems
+                        self.web_ui_process = subprocess.Popen(
+                            [sys.executable, str(launcher_script)],
+                            cwd=str(project_root)
+                        )
+                    
+                    # Update progress
+                    progress.update(task, advance=50)
+                    
+                    # Wait a moment for the server to start
+                    await asyncio.sleep(3)
+                    
+                    # Open in browser if configured
+                    if get_setting('ui.web_ui.auto_launch_browser', True):
+                        self._open_web_ui_in_browser()
+                    
+                    self.web_ui_status = WebUIStatus.RUNNING
+                    progress.update(task, completed=100)
+                    
+                    self.console.print("\n[green]✅ AGENT-X Web UI is running![/]")
+                    self.console.print("\n🌐 [bold]Web Interface:[/] http://localhost:3000")
+                    self.console.print("🔧 [bold]API Server:[/]    http://localhost:8000")
+                    self.console.print("\n[dim]The Web UI is running in a separate window.[/]")
+                    
+                except Exception as e:
+                    self.web_ui_status = WebUIStatus.ERROR
+                    self.console.print(f"\n[red]❌ Failed to start Web UI:[/] {str(e)}")
+                    logger.exception("Error launching Web UI")
+                    
+        except Exception as e:
+            self.web_ui_status = WebUIStatus.ERROR
+            self.console.print(f"\n[red]❌ Error launching Web UI: {str(e)}[/]")
+            logger.exception("Error in Web UI launcher")
+        
+        await asyncio.sleep(2)  # Show message before returning to menu
+    
+    def _open_web_ui_in_browser(self) -> None:
+        """Open the web UI in the default browser."""
+        host = get_setting('ui.web_ui.host', 'localhost')
+        port = get_setting('ui.web_ui.port', 3000)
+        url = f"http://{host}:{port}"
+        
+        try:
+            webbrowser.open(url)
+            self.console.print(f"\n[green]Opened {url} in your default browser[/]")
+        except Exception as e:
+            self.console.print(f"\n[yellow]Could not open browser. Please visit {url} manually.[/]")
+            logger.warning(f"Could not open browser: {e}")
+    
+    async def _show_settings_menu(self) -> None:
+        """Display and handle the settings menu."""
+        while True:
+            self.console.clear()
+            self.console.print(Panel(
+                "[bold blue]AGENT-X Settings[/]\n[dim]Configure application preferences[/]",
+                border_style="blue",
+                box=DOUBLE
+            ))
+            
+            # Get current settings
+            auto_clear = get_setting('ui.auto_clear_console', False)
+            show_banner = get_setting('ui.show_banner', True)
+            auto_launch = get_setting('ui.web_ui.auto_launch_browser', True)
+            theme = get_setting('ui.theme', 'dark')
+            
+            # Display settings
+            settings_table = Table.grid(padding=(0, 2))
+            settings_table.add_column("Option", style="cyan")
+            settings_table.add_column("Value", style="green")
+            settings_table.add_column("Description", style="dim")
+            
+            settings_table.add_row(
+                "1. Auto Clear Console",
+                "✅ On" if auto_clear else "❌ Off",
+                "Clear console before each command"
+            )
+            settings_table.add_row(
+                "2. Show Banner",
+                "✅ On" if show_banner else "❌ Off",
+                "Show the AGENT-X banner on startup"
+            )
+            settings_table.add_row(
+                "3. Auto-Launch Browser",
+                "✅ On" if auto_launch else "❌ Off",
+                "Open browser automatically when starting Web UI"
+            )
+            settings_table.add_row(
+                "4. Theme",
+                theme.title(),
+                "Color theme for the interface"
+            )
+            settings_table.add_row(
+                "5. Reset to Defaults",
+                "",
+                "Reset all settings to default values"
+            )
+            settings_table.add_row(
+                "0. Back to Main Menu",
+                "",
+                "Return to the main menu"
+            )
+            
+            self.console.print(settings_table)
+            
+            choice = Prompt.ask("\nSelect an option (0-5)", choices=["0", "1", "2", "3", "4", "5"])
+            
+            if choice == "0":
+                break
+            elif choice == "1":
+                new_value = not auto_clear
+                set_setting('ui.auto_clear_console', new_value)
+                self.auto_clear = new_value
+                self.console.print(f"\n[green]Auto Clear Console is now {'✅ On' if new_value else '❌ Off'}[/]")
+                await asyncio.sleep(1)
+            elif choice == "2":
+                new_value = not show_banner
+                set_setting('ui.show_banner', new_value)
+                self.show_banner = new_value
+                self.console.print(f"\n[green]Show Banner is now {'✅ On' if new_value else '❌ Off'}[/]")
+                await asyncio.sleep(1)
+            elif choice == "3":
+                new_value = not auto_launch
+                set_setting('ui.web_ui.auto_launch_browser', new_value)
+                self.console.print(f"\n[green]Auto-Launch Browser is now {'✅ On' if new_value else '❌ Off'}[/]")
+                await asyncio.sleep(1)
+            elif choice == "4":
+                themes = ["dark", "light", "system"]
+                theme_choice = Prompt.ask(
+                    "\nSelect theme",
+                    choices=[str(i) for i in range(1, 4)],
+                    show_choices=True,
+                    default=str(themes.index(theme) + 1) if theme in themes else "1",
+                    show_default=False
+                )
+                new_theme = themes[int(theme_choice) - 1]
+                set_setting('ui.theme', new_theme)
+                self.console.print(f"\n[green]Theme set to {new_theme.title()}[/]")
+                await asyncio.sleep(1)
+            elif choice == "5":
+                if Confirm.ask("\n[bold red]Are you sure you want to reset all settings to defaults?[/]"):
+                    # Reset to default settings
+                    for key in self.settings.settings.keys():
+                        del self.settings.settings[key]
+                    self.settings._migrate_settings()
+                    self.console.print("\n[green]✅ All settings have been reset to defaults.[/]")
+                    await asyncio.sleep(2)
+                    # Reload settings
+                    self.auto_clear = get_setting('ui.auto_clear_console', False)
+                    self.show_banner = get_setting('ui.show_banner', True)
+
     async def _exit_menu(self) -> None:
         """Handle menu exit."""
         if Confirm.ask("\nAre you sure you want to exit?"):

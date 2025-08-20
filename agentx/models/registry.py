@@ -53,6 +53,19 @@ class ModelRegistry:
     def _initialize_registry(self):
         """Initialize the registry with all supported models."""
         # ===== Language Models =====
+        # Register code-gemma-7b first to ensure it's available
+        self.register_model(
+            "code-gemma-7b",
+            "Google's CodeGemma 7B - Specialized for code generation",
+            None,
+            ModelType.LLM,
+            default_params={
+                "temperature": 0.2,
+                "max_tokens": 4096,
+                "top_p": 0.9
+            }
+        )
+        
         self.register_model(
             "llama-3.3-70b-instruct",
             "Meta's Llama 3.3 70B - General purpose language model",
@@ -243,10 +256,18 @@ class ModelRegistry:
             
         try:
             # Import all model base classes
-            from .llm import BaseLLM, DBRXInstruct, MixtralInstruct, CodeLlamaInstruct, NemotronInstruct
-            from .visual import BaseVisualModel, Flux1, SDXLTurbo, PlaygroundV25
+            from .llm import BaseLLM, DBRXInstruct, MixtralInstruct, CodeGemma7B
+            from .visual import BaseVisualModel, Flux1, Bria23
             from .retrieval import BaseRetrievalModel, NVEmbedV1, BGEV1_5, SnowflakeArcticEmbed
-            from .multimodal import LLaVABase, LLaVA13B
+            
+            # Create placeholder classes for multimodal models if the module is not available
+            try:
+                from .multimodal import LLaVABase, LLaVA13B
+            except ImportError:
+                logger.warning("Multimodal module not found. Multimodal models will not be available.")
+                # Create placeholder classes
+                class LLaVABase: pass
+                class LLaVA13B: pass
             
             # Map model names to their implementation classes
             model_class_map = {
@@ -255,13 +276,13 @@ class ModelRegistry:
                 "llama-3-8b-instruct": DBRXInstruct,  # Using DBRX as fallback
                 "llama-3-70b-instruct": DBRXInstruct,  # Using DBRX as fallback
                 "mixtral-8x7b-instruct": MixtralInstruct,
-                "code-llama-70b-instruct": CodeLlamaInstruct,
-                "nemotron-3-8b-8k-base": NemotronInstruct,
+                "code-gemma-7b": CodeGemma7B,
+                "code-llama-70b-instruct": CodeGemma7B,  # Fallback mapping for Code Llama
                 
                 # === Visual Models ===
                 "flux.1-dev": Flux1,
-                "sdxl-turbo": SDXLTurbo,
-                "playground-v2.5": PlaygroundV25,
+                "sdxl-turbo": Flux1,  # Using Flux1 as fallback for SDXL Turbo
+                "playground-v2.5": Bria23,  # Using Bria23 for playground-v2.5
                 
                 # === Retrieval Models ===
                 "nv-embed-v1": NVEmbedV1,
@@ -350,6 +371,14 @@ class ModelRegistry:
                 f"Unknown model: {model_name}. Available models: {available}"
             )
         
+        # Ensure the model class is available after lazy loading
+        if model_info.model_class is None:
+            available = ", ".join(sorted(self._models.keys()))
+            raise RuntimeError(
+                f"Model '{model_name}' is registered but has no implementation bound. "
+                f"This usually means lazy-loading failed to map it. Available models: {available}"
+            )
+
         # Merge default params with provided kwargs (kwargs take precedence)
         params = {**model_info.default_params, **kwargs}
         # Ensure model_name is passed to the model constructor

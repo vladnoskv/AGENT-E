@@ -73,7 +73,7 @@ class BaseAgent:
         self.verbose = kwargs.get('verbose', False)
         
         if self.model is None and self.model_name and self.model_registry:
-            self.model = self.model_registry.get_model(self.model_name)
+            self.model = self.model_registry.create_model(self.model_name)
         
         if self.model is None:
             raise ValueError("Either model or model_name with model_registry must be provided")
@@ -160,7 +160,7 @@ class SuperAgent:
             "coder": BaseAgent(
                 name="coder",
                 role=AgentRole.CODER,
-                model_name="code-llama-70b-instruct",
+                model_name="code-gemma-7b",
                 model_registry=self.model_registry,
                 verbose=self.verbose
             ),

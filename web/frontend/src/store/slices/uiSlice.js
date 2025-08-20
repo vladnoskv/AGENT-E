@@ -8,6 +8,8 @@ const initialState = {
   loading: false,
   error: null,
   notifications: [],
+  isConnected: false,
+  socketId: null,
 };
 
 const uiSlice = createSlice({
@@ -46,6 +48,34 @@ const uiSlice = createSlice({
         (notification) => notification.id !== action.payload
       );
     },
+    setConnected: (state, action) => {
+      state.isConnected = action.payload;
+    },
+    setSocketId: (state, action) => {
+      state.socketId = action.payload;
+    },
+    addMessage: (state, action) => {
+      // Handle incoming WebSocket messages
+      const { type, data } = action.payload;
+      switch (type) {
+        case 'status':
+          state.notifications.push({
+            id: Date.now(),
+            message: data.message,
+            severity: 'info',
+          });
+          break;
+        case 'error':
+          state.notifications.push({
+            id: Date.now(),
+            message: data.message,
+            severity: 'error',
+          });
+          break;
+        default:
+          break;
+      }
+    },
   },
 });
 
@@ -59,6 +89,9 @@ export const {
   setError,
   addNotification,
   removeNotification,
+  setConnected,
+  setSocketId,
+  addMessage,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

@@ -1,25 +1,26 @@
-# 🤖 AGENT-X - Multi-Model AI Orchestration CLI
+# 🤖 AGENT-X - Multi-Agent AI System with Web Interface
 
-A powerful Python-based command-line interface for orchestrating multiple specialized AI models from NVIDIA's NIM API, including LLMs, retrieval models, and visual models.
+A powerful Node.js-based framework for building and orchestrating AI agents with a modern web interface and CLI. Supports multiple AI models including NVIDIA's NIM API, with built-in WebSocket support for real-time communication.
 
 ## 🚀 Features
 
-- **Python-Powered**: Pure Python implementation for better maintainability
-- **Rich Terminal UI**: Beautiful console output with rich text formatting
-- **Multi-Model Support**: Seamlessly switch between different AI models
-- **Asynchronous Design**: Built with asyncio for efficient operations
-- **Extensible Architecture**: Easy to add new models and capabilities
-- **Configuration Management**: Environment-based configuration
-- **Interactive Menu**: User-friendly interface for model interaction
-- **Model Registry**: Centralized management of all available models
+- **Modern Web Interface**: Built with Fastify and WebSockets for real-time interaction
+- **Modular Architecture**: Easily extensible with new models and tools
+- **Multi-Model Support**: Integrated with NVIDIA's AI models and other providers
+- **Real-time Communication**: WebSocket support for interactive experiences
+- **CLI & Web**: Use via command line or web interface
+- **Extensible**: Add custom models, tools, and workflows
+- **Logging & Monitoring**: Built-in logging with Pino for observability
+- **RESTful API**: Full-featured API for integration with other services
 
-## 🛠 Installation
+## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.9 or higher
-- NVIDIA API key (get it from [NVIDIA NGC](https://ngc.nvidia.com/))
+- Node.js 18 or higher
+- npm or yarn
+- NVIDIA API key (for NVIDIA models)
 
-### Option 1: Install from source
+### Installation
 
 1. Clone the repository:
    ```bash
@@ -27,153 +28,174 @@ A powerful Python-based command-line interface for orchestrating multiple specia
    cd agentx
    ```
 
-2. Create and activate a virtual environment (recommended):
+2. Install dependencies:
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   npm install
    ```
 
-3. Install the package in development mode:
-   ```bash
-   pip install -e .
-   ```
-
-### Option 2: Install directly
-
-```bash
-pip install git+https://github.com/yourusername/agentx.git
-```
-
-### Configuration
-
-1. Create a `.env` file in the project root with your NVIDIA API key:
-   ```
+3. Create a `.env` file in the project root:
+   ```env
+   # Required
    NVIDIA_API_KEY=your-nvidia-api-key-here
-   ```
-
-2. (Optional) Configure additional settings in the `.env` file:
-   ```
-   # Base URL for NVIDIA NIM API (default: https://api.nvidia.com/nim/v1)
-   NIM_API_BASE_URL=https://api.nvidia.com/nim/v1
    
-   # Log level (default: INFO)
-   LOG_LEVEL=INFO
+   # Optional
+   PORT=3000
+   HOST=localhost
+   LOG_LEVEL=info
+   NODE_ENV=development
    ```
 
-## 🚦 Quick Start
+### Starting the Web Interface
 
-### Interactive Mode
-
-Launch the interactive menu:
+Start the web server:
 ```bash
-agentx
+npm run web
 ```
 
-This will start the AGENT-X CLI in interactive mode, where you can:
-- Select from available models
-- Chat with language models
-- Generate code
-- Create images from text prompts
-- Generate text embeddings
-- View model information and history
+Then open http://localhost:3000 in your browser.
 
-### Command-Line Mode
+### Using the CLI
 
-You can also use AGENT-X directly from the command line:
-
+Start an interactive chat session:
 ```bash
-# List all available models
-agentx list-models
-
-# Run a query with the default model
-agentx run "Your question or instruction here"
-
-# Run a query with a specific model
-agentx run --model dbrx-instruct "Your question here"
-
-# Edit a file with a model
-agentx run --model codegemma-7b --file script.py "Improve this code"
+npm run chat
 ```
 
-### Command Line Usage
-
-#### List available models:
+Or use specific commands:
 ```bash
-agentx --list-models
+# Start the web interface
+agentx web --port 3000
+
+# Start a chat session
+agentx chat --model nvidia/qwen2.5-coder-32b
+
+# Execute a single prompt
+agentx exec "Your prompt here" --model nvidia/llama3.1-nemotron-70b
 ```
 
-#### Run a text generation model:
-```bash
-agentx --model dbrx-instruct --prompt "Explain quantum computing in simple terms"
+## 🏗️ Architecture
+
+AGENT-X is built with a modular architecture that separates concerns and makes it easy to extend:
+
+```
+src/
+├── index.js          # Main CLI entry point
+├── web/             # Web server and API
+│   ├── server.js     # Fastify server setup
+│   ├── api/          # REST API routes
+│   └── ws-handler.js # WebSocket message handling
+├── models/          # AI model implementations
+│   ├── registry.js   # Model registration and management
+│   └── nvidia.js     # NVIDIA model integration
+├── services/        # Business logic
+│   └── agent-service.js # Core agent functionality
+└── utils/           # Utilities
+    └── logger.js     # Logging configuration
 ```
 
-#### Test connection to all models:
-```bash
-agentx --test-all
+### Key Components
+
+1. **Web Server**: Fastify-based server with WebSocket support
+2. **API Layer**: RESTful endpoints for model interaction
+3. **WebSocket**: Real-time communication for chat and updates
+4. **Model Registry**: Centralized model management
+5. **Agent Service**: Core logic for processing requests
+6. **CLI**: Command-line interface for interaction
+
+## 🔌 Available Models
+
+AGENT-X supports various AI models through a unified interface:
+
+### NVIDIA Models
+- `nvidia/qwen2.5-coder-32b`: Qwen 2.5 Coder 32B for code generation
+- `nvidia/llama3.1-nemotron-70b`: Llama 3.1 Nemotron 70B for general purpose
+- `nvidia/llama3.3-nemotron-super-49b`: Llama 3.3 Nemotron Super 49B (preview)
+
+### Adding Custom Models
+
+You can register custom models by implementing the `BaseModel` interface and registering them in the model registry.
+
+```javascript
+// Example model implementation
+class MyCustomModel extends BaseModel {
+  async generate(prompt, options = {}) {
+    // Your implementation here
+  }
+}
+
+// Register the model
+import { registerModel } from './models/registry.js';
+
+registerModel('my-model', {
+  factory: (config) => new MyCustomModel(config),
+  config: {
+    description: 'My custom model',
+    parameters: {
+      // Model parameters
+    }
+  }
+});
 ```
 
-#### Show current configuration:
-```bash
-agentx --config
-```
+## 🌐 Web Interface
 
-### Available Models
+The web interface provides a user-friendly way to interact with AGENT-X:
 
-- **Code Generation**:
-  - `starcoder2-15b`: BigCode's StarCoder2 15B for code generation and completion
-  - `codegemma-7b`: Google's CodeGemma 7B for code generation
+- **Chat Interface**: Real-time chat with AI models
+- **Model Selection**: Switch between different models
+- **Conversation History**: View and manage past conversations
+- **Settings**: Configure model parameters and preferences
 
-- **Text Generation**:
-  - `dbrx-instruct`: Databricks DBRX Instruct for general purpose chat
-  - `gemma-2-7b-it`: Google's Gemma 2 7B model for general purpose chat
+## 🛠️ Development
 
-- **Retrieval Models**:
-  - `nv-embed-v1`: NVIDIA's general-purpose embedding model
-  - `nemo-retriever`: NVIDIA's NeMo Retriever for hybrid search
-  - `nemo-reranker`: NVIDIA's NeMo Reranker for improving search results
+### Getting Started
 
-- **Visual Models**:
-  - `flux-1`: Black Forest Labs' Flux 1.0 for image generation
-  - `bria-2.3`: BRIA AI's 2.3 for high-quality image generation
-  - `ai-detector`: Model for detecting AI-generated images
-
-## 📚 Documentation
-
-### Interactive Menu
-
-The interactive menu provides an easy way to explore and use all features:
-
-1. **List Available Models**: View all registered models with descriptions
-2. **Run a Model**: Select a model and provide a prompt
-3. **Test Connection**: Verify connectivity to a specific model
-4. **Configuration**: View current settings
-5. **Exit**: Close the application
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
+4. Open http://localhost:3000
 
 ### Environment Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `NVIDIA_API_KEY` | Your NVIDIA API key | Required |
-| `NIM_API_BASE_URL` | Base URL for NIM API | `https://api.nvidia.com/nim` |
+| `NVIDIA_API_KEY` | NVIDIA API key | Required |
+| `PORT` | Web server port | 3000 |
+| `HOST` | Web server host | localhost |
+| `LOG_LEVEL` | Logging level | info |
+| `NODE_ENV` | Environment | development |
+
+### Testing
+
+Run the test suite:
+```bash
+npm test
+```
+
+### Building
+
+Create a production build:
+```bash
+npm run build
+```
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Contributions are welcome! Please read our [contributing guidelines](CONTRIBUTING.md) to get started.
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 📚 Documentation
+
+For detailed documentation, please visit our [documentation website](https://agentx-docs.example.com).
+
 ## 🙏 Acknowledgments
 
-- NVIDIA for their amazing AI models and APIs
-- The open-source community for valuable contributions and feedback
+- [NVIDIA](https://www.nvidia.com/) for their powerful AI models
+- [Fastify](https://www.fastify.io/) for the amazing web framework
+- The open-source community for their contributions
 python cli.py run nv-embed-v1 --file document.txt --output embeddings.json
 ```
 
